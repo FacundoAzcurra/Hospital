@@ -1,13 +1,10 @@
 package com.solvd.hospital.DAO;
 
-import com.solvd.hospital.binary.Rooms;
+import com.solvd.hospital.bin.Rooms;
 
 import java.util.List;
 
-public interface RoomsDAO {
-    public List<Rooms> getAllRoom();
-    public Rooms getRoomId(int id);
-    public void updateRoom(Rooms rooms);
-    public void deleteRoom(Rooms rooms);
+public interface RoomsDAO extends DAO<Rooms, Integer> {
+
 
 }

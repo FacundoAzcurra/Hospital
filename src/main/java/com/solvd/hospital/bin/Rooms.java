@@ -1,19 +1,29 @@
-package com.solvd.hospital.binary;
+package com.solvd.hospital.bin;
 
 public class Rooms {
     int roomId;
     boolean isAvailable;
     int floor;
     int medicId;
+    int doctorOfficeId;
 
     public Rooms() {
     }
 
-    public Rooms(int roomId, boolean isAvailable, int floor, int medicId) {
+    public Rooms(int roomId, boolean isAvailable, int floor, int medicId,int doctorOfficeId) {
         this.roomId = roomId;
         this.isAvailable = isAvailable;
         this.floor = floor;
         this.medicId = medicId;
+        this.doctorOfficeId = doctorOfficeId;
+    }
+
+    public int getDoctorOfficeId() {
+        return doctorOfficeId;
+    }
+
+    public void setDoctorOfficeId(int doctorOfficeId) {
+        this.doctorOfficeId = doctorOfficeId;
     }
 
     public int getMedicId() {
@@ -47,6 +57,7 @@ public class Rooms {
     public void setFloor(int floor) {
         this.floor = floor;
     }
+
 
     @Override
     public int hashCode() {

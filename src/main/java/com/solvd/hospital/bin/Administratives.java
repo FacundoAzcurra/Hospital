@@ -1,4 +1,4 @@
-package com.solvd.hospital.binary;
+package com.solvd.hospital.bin;
 
 public class Administratives {
     int administrativesId;

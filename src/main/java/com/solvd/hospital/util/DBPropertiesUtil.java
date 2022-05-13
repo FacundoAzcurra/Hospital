@@ -10,12 +10,12 @@ import java.util.Properties;
 
 public class DBPropertiesUtil {
     private final static Logger LOG = LogManager.getLogger(DBPropertiesUtil.class);
-    private static Properties properties = new Properties();
-    private static DBPropertiesUtil dbPropertiesUtil = new DBPropertiesUtil();
+    private final static Properties properties = new Properties();
+    private final static DBPropertiesUtil dbPropertiesUtil = new DBPropertiesUtil();
 
     private DBPropertiesUtil() {
         try {
-            properties.load(new FileReader(new File("src/main/resources/db.properties")));
+            properties.load(new FileReader(new File("HospitalJava/HospitalSQLJava/src/main/resources/db.properties")));
         } catch (IOException e) {
             LOG.error("IO Exception while reading properties", e);
         }

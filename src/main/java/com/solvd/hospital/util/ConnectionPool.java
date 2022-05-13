@@ -2,30 +2,35 @@ package com.solvd.hospital.util;
 
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.logging.log4j.util.PropertiesUtil;
 
 import java.net.ConnectException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectionPool{
 
-    private final String URL = Constants.URL;
-
-    private final String USER = Constants.USER;
-
-    private final String PASS = Constants.PASS;
-
+    private final String URL = DBPropertiesUtil.getString(Constants.URL);
+    private final String USER = DBPropertiesUtil.getString(Constants.USER);
+    private final String PASS = DBPropertiesUtil.getString(Constants.PASS);
     private static ConnectionPool datasource;
-
-    private BasicDataSource dataSource;
+    private BasicDataSource basicDataSource = null;
 
     private final static int MAX_CONNECTIONS = DBPropertiesUtil.getInt(Constants.MAX_CONNECTIONS);
+
+    private Statement st;
+    private ResultSet rs;
+
+    private BasicDataSource dataSource;
 
     private int createdConnectionsAmount = 0;
 
     private final List<Connection> connectionList = new ArrayList<>(MAX_CONNECTIONS);
+
     private ConnectionPool() {
         dataSource = new BasicDataSource();
         dataSource.setUsername(USER);
@@ -70,6 +75,7 @@ public class ConnectionPool{
     public void returnConnection(Connection connection){
         connectionList.add(connection);
     }
+
 
 
 }
