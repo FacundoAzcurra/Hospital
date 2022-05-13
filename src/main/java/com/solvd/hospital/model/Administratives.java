@@ -17,4 +17,19 @@ public class Administratives {
     public void setAdministrativesId(int administrativesId) {
         this.administrativesId = administrativesId;
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

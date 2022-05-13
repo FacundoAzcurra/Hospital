@@ -57,4 +57,19 @@ public class Patients {
     public void setHealthCareId(int healthCareId) {
         this.healthCareId = healthCareId;
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

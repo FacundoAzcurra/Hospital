@@ -47,4 +47,19 @@ public class ChirophaneTrainees {
     public void setChirophaneId(int chirophaneId) {
         this.chirophaneId = chirophaneId;
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

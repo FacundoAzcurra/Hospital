@@ -47,4 +47,19 @@ public class Nurses {
     public void setChirophaneRoomId(int chirophaneRoomId) {
         this.chirophaneRoomId = chirophaneRoomId;
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
