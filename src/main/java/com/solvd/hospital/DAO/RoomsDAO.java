@@ -1,6 +1,6 @@
 package com.solvd.hospital.DAO;
 
-import com.solvd.hospital.model.Rooms;
+import com.solvd.hospital.binary.Rooms;
 
 import java.util.List;
 

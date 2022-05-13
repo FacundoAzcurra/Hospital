@@ -1,4 +1,4 @@
-package com.solvd.hospital.model;
+package com.solvd.hospital.binary;
 
 public class DoctorOffice {
     int doctorOfficeId;
@@ -20,16 +20,16 @@ public class DoctorOffice {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        return equals(obj);
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return toString();
     }
 }
