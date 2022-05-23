@@ -1,5 +1,9 @@
 package com.solvd.hospital.bin;
 
+import javax.xml.bind.annotation.*;
+
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Medics {
     int medicId;
     String firstName;

@@ -17,4 +17,3 @@ DELETE FROM ChirophaneTrainees where idChirophanTrainees = 1;
 DELETE FROM Chirophane where idChirophane = 1;
 
 DELETE FROM Administratives where idAdministratives = 1;
-

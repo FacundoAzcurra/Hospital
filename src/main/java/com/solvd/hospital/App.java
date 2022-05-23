@@ -1,4 +1,8 @@
 package com.solvd.hospital;
+import com.solvd.hospital.DAO.DAOException;
+import com.solvd.hospital.DAO.RoomsDAO;
+import com.solvd.hospital.DAO.impl.IRoomsDAO;
+import com.solvd.hospital.bin.Rooms;
 import com.solvd.hospital.util.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,38 +14,33 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class App {
     private static final Logger LOG = LogManager.getLogger(App.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DAOException,SQLException {
 
-            try (Connection connection = ConnectionPool.getInstance().getConnection()){
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from users");
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            RoomsDAO room = new IRoomsDAO(connection);
+            List<Rooms> roomsList = room.getRooms();
+            for(Rooms u : roomsList){
+                LOG.info(u.toString());
+            }
+            if (connection != null){
+                LOG.info("You are inside");
+            }else{
+                LOG.info("Connection error.");
+            }
 
-                if (connection != null) {
-                    LOG.info("You are inside now");
-                } else {
-                    LOG.info("You did not Connect to the server");
-                }
-                while (rs.next()) {
-                    LOG.info(rs.getString("name"));
-                }
-                rs.close();
-                st.close();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (ConnectException e) {
-                e.printStackTrace();
-            } finally {
+        }catch (SQLException e){
+            e.printStackTrace();
+        } catch (ConnectException e) {
+            e.printStackTrace();
+        } finally {
+        }
     }
-    }
-
-
 }
-
 
 
 

@@ -50,15 +50,20 @@ public class ConnectionPool{
         } else {
             return datasource;
         }
-    }
+    };
+
 
     public Connection getConnection() throws ConnectException {
-        if(!connectionList.isEmpty()){
-            return connectionList.remove(0);
-        }else if(createdConnectionsAmount < MAX_CONNECTIONS){
-            return createConnection();
-        } else {
-            throw new ConnectException("There are no available connections.");
+        try {
+            if (!connectionList.isEmpty()) {
+                return connectionList.remove(0);
+            } else if (createdConnectionsAmount < MAX_CONNECTIONS) {
+                return createConnection();
+            } else {
+                throw new ConnectException("There are no available connections.");
+            }
+        }catch (NumberFormatException e){
+            throw e;
         }
     }
 
@@ -75,7 +80,5 @@ public class ConnectionPool{
     public void returnConnection(Connection connection){
         connectionList.add(connection);
     }
-
-
 
 }

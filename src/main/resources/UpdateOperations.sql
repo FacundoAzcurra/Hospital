@@ -1,6 +1,6 @@
 UPDATE AmbulanceDriver
 SET hasPCRKnowledge = 1
-WHERE idAmbulanceDriver=1;
+WHERE ambulanceDriverid=1;
 
 UPDATE Medics
 set firstName = "Satrapa"
@@ -20,10 +20,10 @@ where idChirophane = 1;
 
 UPDATE Patients
 set lastName = "Chacacampeon"
-where idPatients = 2;
+where idPatient = 1;
 
 Update Ambulances
-set ambulanceDriverId = 2222
+set ambulance = 20
 where idAmbulances = 1;
 
 Update MedicTrainees
@@ -32,8 +32,8 @@ where idMedicTrainees = 1;
 
 Update ChirophaneTrainees
 set firstName = "Saul"
-where idChirophanTrainees = 1;
+where idChirophaneTrainees = 1;
 
 Update ChirophaneTrainees
 set lastName = "Goodman"
-where idChirophanTrainees = 1;
+where idChirophaneTrainees = 1;

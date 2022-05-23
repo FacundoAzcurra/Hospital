@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
@@ -17,7 +18,7 @@ public class DBPropertiesUtil {
         try {
             properties.load(new FileReader(new File("HospitalJava/HospitalSQLJava/src/main/resources/db.properties")));
         } catch (IOException e) {
-            LOG.error("IO Exception while reading properties", e);
+            e.printStackTrace();
         }
     }
 
@@ -28,5 +29,4 @@ public class DBPropertiesUtil {
         public static int getInt(String key){
             return Integer.parseInt(properties.getProperty(key));
         }
-
 }
