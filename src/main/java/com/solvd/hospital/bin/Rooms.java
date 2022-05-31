@@ -4,8 +4,7 @@ package com.solvd.hospital.bin;
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "rooms")
-@XmlAccessorType(XmlAccessType.FIELD)
-//@XmlType(propOrder = {"idRooms", "floor", "medicId","doctorOfficeId","isAvailable"})
+@XmlType(propOrder = { "idRooms", "floor", "doctorOfficeId", "available","medicId" })
 public class Rooms {
 
     int idRooms;
@@ -25,15 +24,15 @@ public class Rooms {
         this.doctorOfficeId = doctorOfficeId;
     }
 
-    @XmlElement(name="doctorOfficeId")
+
     public int getDoctorOfficeId() {
         return doctorOfficeId;
     }
-
+    @XmlElement(name="doctorOfficeId")
     public void setDoctorOfficeId(int doctorOfficeId) {
         this.doctorOfficeId = doctorOfficeId;
     }
-    @XmlElement(name="medicId")
+
     public int getMedicId() {
         return medicId;
     }
@@ -42,16 +41,16 @@ public class Rooms {
         this.medicId = medicId;
     }
 
-    @XmlAttribute(name="idRooms")
+
     public int getidRooms() {
         return idRooms;
     }
-
+    @XmlAttribute(name="idRooms")
     public void setidRooms(int idRooms) {
         this.idRooms = idRooms;
     }
 
-    @XmlElement(name="isAvailable")
+
     public boolean isAvailable() {
         return isAvailable;
     }
@@ -60,11 +59,12 @@ public class Rooms {
         isAvailable = available;
     }
 
-    @XmlElement(name="floor")
+
     public int getFloor() {
         return floor;
     }
 
+    @XmlElement(name="floor")
     public void setFloor(int floor) {
         this.floor = floor;
     }
