@@ -26,20 +26,35 @@ public class Json {
         Patients patient3 = new Patients(3,true,"Saul","Badman",3);
         Patients patient4 = new Patients(4,false,"Ramon","Sanchopanza",4);
 
-        try {
-            List<Patients> patients = new ArrayList<>();
-            patients.add(patient);
-            patients.add(patient2);
-            patients.add(patient3);
-            patients.add(patient4);
+        List<Patients> patients = new ArrayList<>();
+        patients.add(patient);
+        patients.add(patient2);
+        patients.add(patient3);
+        patients.add(patient4);
 
-            File file = new File("src/main/resources/parsedJSON.json");
+        try{
+            File file = new File("src/main/resources/patients.json");
+            mapper.writeValue(file, patients);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+       /* try {
+                JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, Patients.class);
+                List<Patients> patientsList = mapper.readValue(new File("parsedJSON.json"), type);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+*/
+
+            /* file = new File("src/main/resources/parsedJSON.json");
                 if(!file.exists()){
                     file.createNewFile();
                 }
                 mapper.writeValue(file,patients);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

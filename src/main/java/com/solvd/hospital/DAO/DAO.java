@@ -11,8 +11,8 @@ public interface DAO<T,K> {
 
     void delete(T a) throws DAOException;
 
-    List<T> getRooms() throws DAOException;
+    List<T> getList() throws DAOException;
 
-    T getRoom(K id) throws DAOException;
+    T getObject(K id) throws DAOException;
 
 }

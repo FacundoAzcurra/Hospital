@@ -5,10 +5,10 @@ import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "rooms")
 @XmlAccessorType(XmlAccessType.FIELD)
-//@XmlType(propOrder = {"roomId", "floor", "medicId","doctorOfficeId","isAvailable"})
+//@XmlType(propOrder = {"idRooms", "floor", "medicId","doctorOfficeId","isAvailable"})
 public class Rooms {
 
-    int roomId;
+    int idRooms;
     boolean isAvailable;
     int floor;
     int medicId;
@@ -17,8 +17,8 @@ public class Rooms {
     public Rooms() {
     }
 
-    public Rooms(int roomId, boolean isAvailable, int floor, int medicId,int doctorOfficeId) {
-        this.roomId = roomId;
+    public Rooms(int idRooms, boolean isAvailable, int floor, int medicId,int doctorOfficeId) {
+        this.idRooms = idRooms;
         this.isAvailable = isAvailable;
         this.floor = floor;
         this.medicId = medicId;
@@ -42,13 +42,13 @@ public class Rooms {
         this.medicId = medicId;
     }
 
-    @XmlAttribute(name="roomId")
-    public int getRoomId() {
-        return roomId;
+    @XmlAttribute(name="idRooms")
+    public int getidRooms() {
+        return idRooms;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
+    public void setidRooms(int idRooms) {
+        this.idRooms = idRooms;
     }
 
     @XmlElement(name="isAvailable")
@@ -80,8 +80,13 @@ public class Rooms {
 
     @Override
     public String toString() {
-        return toString();
+        return "Rooms{" +
+                "idRooms=" + idRooms +
+                ", isAvailable=" + isAvailable +
+                ", floor=" + floor +
+                ", medicId=" + medicId +
+                ", doctorOfficeId=" + doctorOfficeId +
+                '}';
     }
-
 }
 

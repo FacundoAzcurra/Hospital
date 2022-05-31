@@ -1,9 +1,7 @@
 package com.solvd.hospital.DAO.impl;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
-import com.solvd.hospital.DAO.DAO;
 import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.DAO.RoomsDAO;
+import com.solvd.hospital.DAO.IRoomsDAO;
 import com.solvd.hospital.bin.Rooms;
 
 import java.sql.Connection;
@@ -13,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IRoomsDAO implements RoomsDAO {
+public class RoomsDAO implements IRoomsDAO {
 
     private String  INSERT = "INSERT INTO Rooms(idRooms, isAvailable, floor, MedicId, DoctorOfficeId) VALUES (?,?,?,?,?) ";
     private String  UPDATE = "UPDATE Rooms SET isAvailable = ?, floor = ?, MedicId = ?, DoctorOfficeId = ? WHERE idRooms = ?)";
@@ -23,7 +21,7 @@ public class IRoomsDAO implements RoomsDAO {
 
     private Connection conn;
 
-    public IRoomsDAO(Connection conn) {
+    public RoomsDAO(Connection conn) {
         this.conn = conn;
     }
     @Override
@@ -31,7 +29,7 @@ public class IRoomsDAO implements RoomsDAO {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(INSERT);
-            stat.setInt(1,a.getRoomId());
+            stat.setInt(1,a.getidRooms());
             stat.setBoolean(2,a.isAvailable());
             stat.setInt(3,a.getFloor());
             stat.setInt(4,a.getMedicId());
@@ -50,9 +48,7 @@ public class IRoomsDAO implements RoomsDAO {
                     throw new DAOException("SQL ERROR",e);
                 }
             }
-            
         }
-
     }
 
     @Override
@@ -60,7 +56,7 @@ public class IRoomsDAO implements RoomsDAO {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getRoomId());
+            stat.setInt(1,a.getidRooms());
             stat.setBoolean(2,a.isAvailable());
             stat.setInt(3,a.getFloor());
             stat.setInt(4,a.getMedicId());
@@ -85,8 +81,8 @@ public class IRoomsDAO implements RoomsDAO {
     public void delete(Rooms a) throws DAOException {
         PreparedStatement stat = null;
         try{
-            stat = conn.prepareStatement(INSERT);
-            stat.setInt(1,a.getRoomId());
+            stat = conn.prepareStatement(DELETE);
+            stat.setInt(1,a.getidRooms());
 
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
@@ -107,17 +103,17 @@ public class IRoomsDAO implements RoomsDAO {
 
     private Rooms convert (ResultSet rs) throws SQLException {
 
-        int roomId = rs.getInt("roomId");
+        int idRooms = rs.getInt("idRooms");
         boolean isAvailable = rs.getBoolean("isAvailable");
         int floor = rs.getInt("floor");
         int medicId = rs.getInt("medicId");
         int doctorOfficeId = rs.getInt("doctorOfficeId");
-        Rooms room = new Rooms(roomId, isAvailable, floor, medicId, doctorOfficeId);
+        Rooms room = new Rooms(idRooms, isAvailable, floor, medicId, doctorOfficeId);
         return room;
     }
 
     @Override
-    public List<Rooms> getRooms() throws DAOException {
+    public List<Rooms> getList() throws DAOException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         List<Rooms> roomsList = new ArrayList<>();
@@ -149,7 +145,7 @@ public class IRoomsDAO implements RoomsDAO {
     }
 
     @Override
-    public Rooms getRoom(Integer id) throws DAOException {
+    public Rooms getObject(Integer id) throws DAOException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         Rooms a = null;
