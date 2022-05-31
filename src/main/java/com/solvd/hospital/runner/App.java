@@ -1,8 +1,8 @@
-package com.solvd.hospital;
+package com.solvd.hospital.runner;
 import com.solvd.hospital.services.DAOException;
 import com.solvd.hospital.services.IRoomsDAO;
 import com.solvd.hospital.services.jdbcimpl.RoomsDAO;
-import com.solvd.hospital.bin.Rooms;
+import com.solvd.hospital.domain.Rooms;
 import com.solvd.hospital.util.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -2,7 +2,7 @@ package com.solvd.hospital.services.jdbcimpl;
 
 import com.solvd.hospital.services.DAOException;
 import com.solvd.hospital.services.IRoomsDAO;
-import com.solvd.hospital.bin.Rooms;
+import com.solvd.hospital.domain.Rooms;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

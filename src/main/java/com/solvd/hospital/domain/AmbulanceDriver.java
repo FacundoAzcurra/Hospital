@@ -1,4 +1,4 @@
-package com.solvd.hospital.bin;
+package com.solvd.hospital.domain;
 
 public class AmbulanceDriver {
     int ambulanceDriverId;
@@ -60,6 +60,11 @@ public class AmbulanceDriver {
 
     @Override
     public String toString() {
-        return toString();
+        return "AmbulanceDriver{" +
+                "ambulanceDriverId=" + ambulanceDriverId +
+                ", hasPcrKnowledge=" + hasPcrKnowledge +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

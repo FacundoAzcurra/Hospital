@@ -1,4 +1,4 @@
-package com.solvd.hospital.bin;
+package com.solvd.hospital.domain;
 
 import javax.xml.bind.annotation.*;
 
@@ -74,6 +74,12 @@ public class Medics {
 
     @Override
     public String toString() {
-        return toString();
+        return "Medics{" +
+                "medicId=" + medicId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", roomId=" + roomId +
+                ", doctorOfficeId=" + doctorOfficeId +
+                '}';
     }
 }

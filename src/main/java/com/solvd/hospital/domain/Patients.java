@@ -1,4 +1,4 @@
-package com.solvd.hospital.bin;
+package com.solvd.hospital.domain;
 
 public class Patients {
     int patientsId;
@@ -70,6 +70,12 @@ public class Patients {
 
     @Override
     public String toString() {
-        return toString();
+        return "Patients{" +
+                "patientsId=" + patientsId +
+                ", isAttendend=" + isAttendend +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", healthCareId=" + healthCareId +
+                '}';
     }
 }

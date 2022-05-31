@@ -1,4 +1,4 @@
-package com.solvd.hospital.bin;
+package com.solvd.hospital.domain;
 
 public class Hospital {
     int id;
@@ -30,6 +30,8 @@ public class Hospital {
 
     @Override
     public String toString() {
-        return toString();
+        return "Hospital{" +
+                "id=" + id +
+                '}';
     }
 }

@@ -1,4 +1,4 @@
-package com.solvd.hospital.bin;
+package com.solvd.hospital.domain;
 
 public class IntensiveCare {
     int intensiveCareId;
@@ -50,6 +50,10 @@ public class IntensiveCare {
 
     @Override
     public String toString() {
-        return toString();
+        return "IntensiveCare{" +
+                "intensiveCareId=" + intensiveCareId +
+                ", intensiveCareRoomId=" + intensiveCareRoomId +
+                ", intensiveCareMedic=" + intensiveCareMedic +
+                '}';
     }
 }

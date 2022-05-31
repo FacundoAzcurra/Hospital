@@ -1,4 +1,4 @@
-package com.solvd.hospital.bin;
+package com.solvd.hospital.domain;
 
 public class Prescription {
     int prescriptionID;
@@ -54,12 +54,20 @@ public class Prescription {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return equals(obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Prescription that = (Prescription) o;
+        return prescriptionID == that.prescriptionID && Double.compare(that.prescriptionPrice, prescriptionPrice) == 0 && medicId == that.medicId && patientId == that.patientId;
     }
 
     @Override
     public String toString() {
-        return toString();
+        return "Prescription{" +
+                "prescriptionID=" + prescriptionID +
+                ", prescriptionPrice=" + prescriptionPrice +
+                ", medicId=" + medicId +
+                ", patientId=" + patientId +
+                '}';
     }
 }

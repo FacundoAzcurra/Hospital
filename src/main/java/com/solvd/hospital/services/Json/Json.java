@@ -1,18 +1,9 @@
 package com.solvd.hospital.services.Json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.solvd.hospital.bin.Medics;
-import com.solvd.hospital.bin.Nurses;
-import com.solvd.hospital.bin.Patients;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.solvd.hospital.domain.Patients;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 

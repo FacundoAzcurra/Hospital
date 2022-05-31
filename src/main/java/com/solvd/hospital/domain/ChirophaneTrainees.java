@@ -1,4 +1,4 @@
-package com.solvd.hospital.bin;
+package com.solvd.hospital.domain;
 
 public class ChirophaneTrainees {
     int chirophaneTraineeId;
@@ -60,6 +60,11 @@ public class ChirophaneTrainees {
 
     @Override
     public String toString() {
-        return toString();
+        return "ChirophaneTrainees{" +
+                "chirophaneTraineeId=" + chirophaneTraineeId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", chirophaneId=" + chirophaneId +
+                '}';
     }
 }

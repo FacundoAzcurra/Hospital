@@ -1,14 +1,12 @@
 package com.solvd.hospital.services.jaxb;
 
 
-import com.solvd.hospital.bin.Medics;
-import com.solvd.hospital.bin.Rooms;
+import com.solvd.hospital.domain.Rooms;
 
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
 import java.io.File;
 import java.io.IOException;
 

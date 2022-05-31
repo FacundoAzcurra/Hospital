@@ -1,7 +1,7 @@
 package com.solvd.hospital.services.jdbcimpl;
 
 import com.solvd.hospital.services.DAOException;
-import com.solvd.hospital.bin.Nurses;
+import com.solvd.hospital.domain.Nurses;
 import com.solvd.hospital.services.INursesDAO;
 
 import java.sql.Connection;

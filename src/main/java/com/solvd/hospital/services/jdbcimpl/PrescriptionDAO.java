@@ -2,7 +2,7 @@ package com.solvd.hospital.services.jdbcimpl;
 
 import com.solvd.hospital.services.DAOException;
 import com.solvd.hospital.services.IPrescriptionDAO;
-import com.solvd.hospital.bin.Prescription;
+import com.solvd.hospital.domain.Prescription;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
