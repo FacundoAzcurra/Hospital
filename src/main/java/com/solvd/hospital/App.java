@@ -19,7 +19,7 @@ public class App {
 
     public static void main(String[] args) throws DAOException,SQLException {
 
-        LOG.info("Select a table to work on. \n1. Rooms  \n2. Appointments \n3. Medics \n4. Prescriptions \n5. Nurses ");
+        LOG.info("Select a table to work in. \n1. Rooms  \n2. Appointments \n3. Medics \n4. Prescriptions \n5. Nurses ");
         Scanner scoption = new Scanner(System.in);
         int option;
         option = scoption.nextInt();
