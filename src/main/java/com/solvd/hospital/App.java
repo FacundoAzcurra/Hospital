@@ -1,7 +1,7 @@
 package com.solvd.hospital;
-import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.DAO.IRoomsDAO;
-import com.solvd.hospital.DAO.impl.RoomsDAO;
+import com.solvd.hospital.services.DAOException;
+import com.solvd.hospital.services.IRoomsDAO;
+import com.solvd.hospital.services.jdbcimpl.RoomsDAO;
 import com.solvd.hospital.bin.Rooms;
 import com.solvd.hospital.util.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 

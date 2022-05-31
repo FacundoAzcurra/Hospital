@@ -1,6 +1,4 @@
-package com.solvd.hospital.DAO;
-
-import com.solvd.hospital.bin.Rooms;
+package com.solvd.hospital.services;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package com.solvd.hospital.DAO.impl;
+package com.solvd.hospital.services.jdbcimpl;
 
-import com.solvd.hospital.DAO.IAppointmentsDAO;
-import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.bin.Appointments;
+import com.solvd.hospital.services.DAOException;
+import com.solvd.hospital.services.IPrescriptionDAO;
+import com.solvd.hospital.bin.Prescription;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,27 +11,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppointmentsDAO implements IAppointmentsDAO {
+public class PrescriptionDAO implements IPrescriptionDAO {
 
-    private String  INSERT = "INSERT INTO Appointments(appointmentID, medicId, appointmentRoomID, patientId) VALUES (?,?,?,?) ";
-    private String  UPDATE = "UPDATE Appointments SET appointmentID = ?, medicId = ?, appointmentRoomID = ?, patientId = ? WHERE appointmentID = ?)";
-    private String DELETE = "DELETE FROM appointments where appointmentID = ?";
-    private String GETALL = "SELECT appointmentID, medicId, appointmentRoomID, patientId FROM Appointments";
-    private String GETONE = "SELECT appointmentID, medicId, appointmentRoomID, patientId FROM Appointments WHERE appointmentId = ?";
+    private final static String  INSERT = "INSERT INTO Prescription(prescriptionID, prescriptionPrice, medicId, patientId) VALUES (?,?,?,?) ";
+    private final static String  UPDATE = "UPDATE Prescription SET prescriptionID = ?, prescriptionPrice = ?, medicId = ?, patientId = ? WHERE prescriptionID = ?)";
+    private final static String DELETE = "DELETE FROM Prescription where prescriptionID = ?";
+    private final static String GET_ALL = "SELECT prescriptionID, prescriptionPrice, medicId, patientId";
+    private final static String GET_ONE = "SELECT prescriptionID, prescriptionPrice, medicId, patientId FROM Prescription WHERE prescriptionID = ?";
 
     private Connection conn;
 
-    public AppointmentsDAO(Connection conn) {
+    public PrescriptionDAO(Connection conn) {
         this.conn = conn;
     }
     @Override
-    public void insert(Appointments a) throws DAOException {
+    public void insert(Prescription a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(INSERT);
-            stat.setInt(1,a.getAppointmentID());
-            stat.setInt(2,a.getMedicId());
-            stat.setInt(3,a.getAppointmentRoomID());
+            stat.setInt(1,a.getPrescriptionID());
+            stat.setDouble(2,a.getPrescriptionPrice());
+            stat.setInt(3,a.getMedicId());
             stat.setInt(4,a.getPatientId());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
@@ -49,15 +49,14 @@ public class AppointmentsDAO implements IAppointmentsDAO {
             }
         }
     }
-
     @Override
-    public void update(Appointments a) throws DAOException {
+    public void update(Prescription a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getAppointmentID());
-            stat.setInt(2,a.getMedicId());
-            stat.setInt(3,a.getAppointmentRoomID());
+            stat.setInt(1,a.getPrescriptionID());
+            stat.setDouble(2,a.getPrescriptionPrice());
+            stat.setInt(3,a.getMedicId());
             stat.setInt(4,a.getPatientId());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
@@ -76,11 +75,11 @@ public class AppointmentsDAO implements IAppointmentsDAO {
     }
 
     @Override
-    public void delete(Appointments a) throws DAOException {
+    public void delete(Prescription a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(DELETE);
-            stat.setInt(1,a.getAppointmentID());
+            stat.setInt(1,a.getPrescriptionID());
 
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
@@ -99,25 +98,25 @@ public class AppointmentsDAO implements IAppointmentsDAO {
         }
     }
 
-    private Appointments convert (ResultSet rs) throws SQLException {
-        int appointmentId = rs.getInt("appointmentId");
+    private Prescription convert (ResultSet rs) throws SQLException {
+        int prescriptionID = rs.getInt("appointmentId");
+        double prescriptionPrice = rs.getDouble("prescriptionPrice");
         int medicId = rs.getInt("medicId");
-        int appointmentRoomId = rs.getInt("appointmentRoomId");
         int patientId = rs.getInt("patientId");
-        Appointments appointment = new Appointments(appointmentId, medicId, appointmentRoomId, patientId);
-        return appointment;
+        Prescription prescription = new Prescription();
+        return prescription;
     }
 
     @Override
-    public List<Appointments> getList() throws DAOException {
+    public List<Prescription> getList() throws DAOException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        List<Appointments> appointmentsList = new ArrayList<>();
+        List<Prescription> prescriptionList = new ArrayList<>();
         try{
-            stat = conn.prepareStatement(GETALL);
+            stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
             while(rs.next()) {
-                appointmentsList.add(convert(rs));
+                prescriptionList.add(convert(rs));
             }
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
@@ -136,16 +135,16 @@ public class AppointmentsDAO implements IAppointmentsDAO {
                     throw new DAOException("SQL Error.",e);
                 }
             }
-        } return appointmentsList;
+        } return prescriptionList;
     }
 
     @Override
-    public Appointments getObject(Integer id) throws DAOException {
+    public Prescription getObject(Integer id) throws DAOException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        Appointments a = null;
+        Prescription a = null;
         try{
-            stat = conn.prepareStatement(GETONE);
+            stat = conn.prepareStatement(GET_ONE);
             stat.setInt(1,id);
             rs = stat.executeQuery();
             if (rs.next()) {

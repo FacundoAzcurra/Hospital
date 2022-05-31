@@ -1,4 +1,4 @@
-package com.solvd.hospital.util;
+package com.solvd.hospital.services.jaxb;
 
 
 import com.solvd.hospital.bin.Medics;
@@ -10,15 +10,20 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import java.io.File;
+import java.io.IOException;
 
 public class Parser {
-    public static void main(String[] args) throws JAXBException {
+    public static void main(String[] args) throws JAXBException, IOException {
 
 
        JAXBContext context = JAXBContext.newInstance(Rooms.class);
        Marshaller mar = context.createMarshaller();
        mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-       mar.marshal(new Rooms(1,true,1,1,1),new File("src/main/resources/Rooms.xml"));
+       File file = new File("src/main/resources/Rooms.xml");
+       if(!file.exists()){
+           file.createNewFile();
+       }
+       mar.marshal(new Rooms(1,true,1,1,1),file);
 
 
 

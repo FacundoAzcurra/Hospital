@@ -1,8 +1,8 @@
-package com.solvd.hospital.DAO.impl;
+package com.solvd.hospital.services.jdbcimpl;
 
-import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.DAO.IMedicsDAO;
-import com.solvd.hospital.bin.Medics;
+import com.solvd.hospital.services.DAOException;
+import com.solvd.hospital.services.IRoomsDAO;
+import com.solvd.hospital.bin.Rooms;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,32 +11,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicsDAO implements IMedicsDAO {
+public class RoomsDAO implements IRoomsDAO {
 
-    private String  INSERT = "INSERT INTO Medics(medicsId, firstName, lastName, roomId, doctorOfficeId) VALUES (?,?,?,?,?) ";
-    private String  UPDATE = "UPDATE Medics SET medicsId = ?, firstName = ?, lastName = ?, roomId = ?, doctorOfficeId = ? WHERE medicsId = ?)";
-    private String DELETE = "DELETE FROM Medics where medicsId = ?";
-    private String GETALL = "SELECT medicsId, firstName, lastName, roomId, doctorOfficeId";
-    private String GETONE = "SELECT medicsId, firstName, lastName, roomId, doctorOfficeId FROM Medics WHERE medicsId = ?";
+    private final static String  INSERT = "INSERT INTO Rooms(idRooms, isAvailable, floor, MedicId, DoctorOfficeId) VALUES (?,?,?,?,?) ";
+    private final static String  UPDATE = "UPDATE Rooms SET isAvailable = ?, floor = ?, MedicId = ?, DoctorOfficeId = ? WHERE idRooms = ?)";
+    private final static String DELETE = "DELETE FROM Rooms where idRooms = ?";
+    private final static String GET_ALL = "SELECT idRooms, isAvailable, floor, MedicId, DoctorOfficeId FROM Rooms";
+    private final static String GET_ONE = "SELECT idRooms, isAvailable, floor, MedicId, DoctorOfficeId FROM Rooms WHERE idRooms = ?";
 
     private Connection conn;
 
-    public MedicsDAO(Connection conn) {
+    public RoomsDAO(Connection conn) {
         this.conn = conn;
     }
     @Override
-    public void insert(Medics a) throws DAOException {
+    public void insert(Rooms a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(INSERT);
-            stat.setInt(1,a.getMedicId());
-            stat.setString(2,a.getFirstName());
-            stat.setString(2,a.getLastName());
-            stat.setInt(4,a.getRoomId());
+            stat.setInt(1,a.getidRooms());
+            stat.setBoolean(2,a.isAvailable());
+            stat.setInt(3,a.getFloor());
+            stat.setInt(4,a.getMedicId());
             stat.setInt(5,a.getDoctorOfficeId());
-
             if(stat.executeUpdate() == 0 ){
-                throw new DAOException("It may not have saved");
+               throw new DAOException("It may not have saved");
             }
 
         } catch (SQLException e) {
@@ -51,15 +50,16 @@ public class MedicsDAO implements IMedicsDAO {
             }
         }
     }
+
     @Override
-    public void update(Medics a) throws DAOException {
+    public void update(Rooms a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getMedicId());
-            stat.setString(2,a.getFirstName());
-            stat.setString(2,a.getLastName());
-            stat.setInt(4,a.getRoomId());
+            stat.setInt(1,a.getidRooms());
+            stat.setBoolean(2,a.isAvailable());
+            stat.setInt(3,a.getFloor());
+            stat.setInt(4,a.getMedicId());
             stat.setInt(5,a.getDoctorOfficeId());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
@@ -78,11 +78,11 @@ public class MedicsDAO implements IMedicsDAO {
     }
 
     @Override
-    public void delete(Medics a) throws DAOException {
+    public void delete(Rooms a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(DELETE);
-            stat.setInt(1,a.getMedicId());
+            stat.setInt(1,a.getidRooms());
 
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
@@ -101,28 +101,29 @@ public class MedicsDAO implements IMedicsDAO {
         }
     }
 
-    private Medics convert (ResultSet rs) throws SQLException {
+    private Rooms convert (ResultSet rs) throws SQLException {
+
+        int idRooms = rs.getInt("idRooms");
+        boolean isAvailable = rs.getBoolean("isAvailable");
+        int floor = rs.getInt("floor");
         int medicId = rs.getInt("medicId");
-        String firstName = rs.getString("firstName");
-        String lastName = rs.getString("lastName");
-        int roomId = rs.getInt("roomId");
         int doctorOfficeId = rs.getInt("doctorOfficeId");
-        Medics medics = new Medics(medicId,firstName,lastName,roomId,doctorOfficeId);
-        return medics;
+        Rooms room = new Rooms(idRooms, isAvailable, floor, medicId, doctorOfficeId);
+        return room;
     }
 
     @Override
-    public List<Medics> getList() throws DAOException {
+    public List<Rooms> getList() throws DAOException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        List<Medics> medicsList = new ArrayList<>();
+        List<Rooms> roomsList = new ArrayList<>();
         try{
-            stat = conn.prepareStatement(GETALL);
+            stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
             while(rs.next()) {
-                medicsList.add(convert(rs));
+                roomsList.add(convert(rs));
             }
-        } catch (SQLException e) {
+            } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
             if(rs!=null){
@@ -139,16 +140,17 @@ public class MedicsDAO implements IMedicsDAO {
                     throw new DAOException("SQL Error.",e);
                 }
             }
-        } return medicsList;
+        } return roomsList;
+
     }
 
     @Override
-    public Medics getObject(Integer id) throws DAOException {
+    public Rooms getObject(Integer id) throws DAOException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        Medics a = null;
+        Rooms a = null;
         try{
-            stat = conn.prepareStatement(GETONE);
+            stat = conn.prepareStatement(GET_ONE);
             stat.setInt(1,id);
             rs = stat.executeQuery();
             if (rs.next()) {

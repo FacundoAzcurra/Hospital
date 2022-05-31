@@ -1,9 +1,4 @@
-package com.solvd.hospital.util;
-
-import com.solvd.hospital.DAO.impl.myBatisIMP;
-import com.solvd.hospital.DAO.myBatisDAO;
-
-import javax.swing.*;
+package com.solvd.hospital.services.mybatis;
 
 public class myBatisRunner {
     public static void main(String[] args) {

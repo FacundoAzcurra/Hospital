@@ -1,7 +1,5 @@
-package com.solvd.hospital.DAO.impl;
+package com.solvd.hospital.services.mybatis;
 
-import com.solvd.hospital.DAO.myBatisDAO;
-import com.solvd.hospital.util.MySessionFactory;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

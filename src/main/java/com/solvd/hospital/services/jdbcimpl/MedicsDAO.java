@@ -1,9 +1,8 @@
-package com.solvd.hospital.DAO.impl;
+package com.solvd.hospital.services.jdbcimpl;
 
-import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.DAO.IPrescriptionDAO;
-import com.solvd.hospital.bin.Appointments;
-import com.solvd.hospital.bin.Prescription;
+import com.solvd.hospital.services.DAOException;
+import com.solvd.hospital.services.IMedicsDAO;
+import com.solvd.hospital.bin.Medics;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,28 +11,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrescriptionDAO implements IPrescriptionDAO {
+public class MedicsDAO implements IMedicsDAO {
 
-    private String  INSERT = "INSERT INTO Prescription(prescriptionID, prescriptionPrice, medicId, patientId) VALUES (?,?,?,?) ";
-    private String  UPDATE = "UPDATE Prescription SET prescriptionID = ?, prescriptionPrice = ?, medicId = ?, patientId = ? WHERE prescriptionID = ?)";
-    private String DELETE = "DELETE FROM Prescription where prescriptionID = ?";
-    private String GETALL = "SELECT prescriptionID, prescriptionPrice, medicId, patientId";
-    private String GETONE = "SELECT prescriptionID, prescriptionPrice, medicId, patientId FROM Prescription WHERE prescriptionID = ?";
+    private final static String  INSERT = "INSERT INTO Medics(medicsId, firstName, lastName, roomId, doctorOfficeId) VALUES (?,?,?,?,?) ";
+    private final static String  UPDATE = "UPDATE Medics SET medicsId = ?, firstName = ?, lastName = ?, roomId = ?, doctorOfficeId = ? WHERE medicsId = ?)";
+    private final static String DELETE = "DELETE FROM Medics where medicsId = ?";
+    private final static String GET_ALL = "SELECT medicsId, firstName, lastName, roomId, doctorOfficeId";
+    private final static String GET_ONE = "SELECT medicsId, firstName, lastName, roomId, doctorOfficeId FROM Medics WHERE medicsId = ?";
 
     private Connection conn;
 
-    public PrescriptionDAO(Connection conn) {
+    public MedicsDAO(Connection conn) {
         this.conn = conn;
     }
     @Override
-    public void insert(Prescription a) throws DAOException {
+    public void insert(Medics a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(INSERT);
-            stat.setInt(1,a.getPrescriptionID());
-            stat.setDouble(2,a.getPrescriptionPrice());
-            stat.setInt(3,a.getMedicId());
-            stat.setInt(4,a.getPatientId());
+            stat.setInt(1,a.getMedicId());
+            stat.setString(2,a.getFirstName());
+            stat.setString(2,a.getLastName());
+            stat.setInt(4,a.getRoomId());
+            stat.setInt(5,a.getDoctorOfficeId());
+
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
@@ -51,14 +52,15 @@ public class PrescriptionDAO implements IPrescriptionDAO {
         }
     }
     @Override
-    public void update(Prescription a) throws DAOException {
+    public void update(Medics a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getPrescriptionID());
-            stat.setDouble(2,a.getPrescriptionPrice());
-            stat.setInt(3,a.getMedicId());
-            stat.setInt(4,a.getPatientId());
+            stat.setInt(1,a.getMedicId());
+            stat.setString(2,a.getFirstName());
+            stat.setString(2,a.getLastName());
+            stat.setInt(4,a.getRoomId());
+            stat.setInt(5,a.getDoctorOfficeId());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
@@ -76,11 +78,11 @@ public class PrescriptionDAO implements IPrescriptionDAO {
     }
 
     @Override
-    public void delete(Prescription a) throws DAOException {
+    public void delete(Medics a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(DELETE);
-            stat.setInt(1,a.getPrescriptionID());
+            stat.setInt(1,a.getMedicId());
 
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
@@ -99,25 +101,26 @@ public class PrescriptionDAO implements IPrescriptionDAO {
         }
     }
 
-    private Prescription convert (ResultSet rs) throws SQLException {
-        int prescriptionID = rs.getInt("appointmentId");
-        double prescriptionPrice = rs.getDouble("prescriptionPrice");
+    private Medics convert (ResultSet rs) throws SQLException {
         int medicId = rs.getInt("medicId");
-        int patientId = rs.getInt("patientId");
-        Prescription prescription = new Prescription();
-        return prescription;
+        String firstName = rs.getString("firstName");
+        String lastName = rs.getString("lastName");
+        int roomId = rs.getInt("roomId");
+        int doctorOfficeId = rs.getInt("doctorOfficeId");
+        Medics medics = new Medics(medicId,firstName,lastName,roomId,doctorOfficeId);
+        return medics;
     }
 
     @Override
-    public List<Prescription> getList() throws DAOException {
+    public List<Medics> getList() throws DAOException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        List<Prescription> prescriptionList = new ArrayList<>();
+        List<Medics> medicsList = new ArrayList<>();
         try{
-            stat = conn.prepareStatement(GETALL);
+            stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
             while(rs.next()) {
-                prescriptionList.add(convert(rs));
+                medicsList.add(convert(rs));
             }
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
@@ -136,16 +139,16 @@ public class PrescriptionDAO implements IPrescriptionDAO {
                     throw new DAOException("SQL Error.",e);
                 }
             }
-        } return prescriptionList;
+        } return medicsList;
     }
 
     @Override
-    public Prescription getObject(Integer id) throws DAOException {
+    public Medics getObject(Integer id) throws DAOException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        Prescription a = null;
+        Medics a = null;
         try{
-            stat = conn.prepareStatement(GETONE);
+            stat = conn.prepareStatement(GET_ONE);
             stat.setInt(1,id);
             rs = stat.executeQuery();
             if (rs.next()) {

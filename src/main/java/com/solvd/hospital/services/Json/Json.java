@@ -1,4 +1,4 @@
-package com.solvd.hospital.util;
+package com.solvd.hospital.services.Json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
