@@ -1,8 +1,8 @@
-package com.solvd.hospital.services.jdbcimpl;
+package com.solvd.hospital.DAO.jdbcimpl;
 
-import com.solvd.hospital.services.DAOException;
-import com.solvd.hospital.services.IMedicsDAO;
-import com.solvd.hospital.domain.Medics;
+import com.solvd.hospital.DAO.DAOException;
+import com.solvd.hospital.domain.Nurses;
+import com.solvd.hospital.DAO.INursesDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,30 +11,28 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicsDAO implements IMedicsDAO {
+public class NursesDAO implements INursesDAO {
 
-    private final static String  INSERT = "INSERT INTO Medics(idMedics, firstName, lastName, roomId, doctorOfficeId) VALUES (?,?,?,?,?) ";
-    private final static String  UPDATE = "UPDATE Medics SET idMedics = ?, firstName = ?, lastName = ?, roomId = ?, doctorOfficeId = ? WHERE idMedics = ?)";
-    private final static String DELETE = "DELETE FROM Medics where idMedics = ?";
-    private final static String GET_ALL = "SELECT idMedics, firstName, lastName, roomId, doctorOfficeId";
-    private final static String GET_ONE = "SELECT idMedics, firstName, lastName, roomId, doctorOfficeId FROM Medics WHERE idMedics = ?";
+    private final static String  INSERT = "INSERT INTO Nurses(nursesId, firstName, lastName, chirophaneRoomId) VALUES (?,?,?,?) ";
+    private final static String  UPDATE = "UPDATE Nurses SET nursesId = ?, firstName = ?, lastName = ?, chirophaneRoomId = ? WHERE nursesId = ?)";
+    private final static String DELETE = "DELETE FROM Nurses where nursesId = ?";
+    private final static String GET_ALL = "SELECT nursesId, firstName, lastName, chirophaneRoomId FROM Nurses";
+    private final static String GET_ONE = "SELECT nursesId, firstName, lastName, chirophaneRoomId FROM Nurses WHERE nursesId = ?";
 
     private Connection conn;
 
-    public MedicsDAO(Connection conn) {
+    public NursesDAO(Connection conn) {
         this.conn = conn;
     }
     @Override
-    public void insert(Medics a) throws DAOException {
+    public void insert(Nurses a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(INSERT);
-            stat.setInt(1,a.getidMedics());
+            stat.setInt(1,a.getNursesId());
             stat.setString(2,a.getFirstName());
-            stat.setString(2,a.getLastName());
-            stat.setInt(4,a.getRoomId());
-            stat.setInt(5,a.getDoctorOfficeId());
-
+            stat.setString(3,a.getLastName());
+            stat.setInt(4,a.getChirophaneRoomId());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
@@ -51,16 +49,16 @@ public class MedicsDAO implements IMedicsDAO {
             }
         }
     }
+
     @Override
-    public void update(Medics a) throws DAOException {
+    public void update(Nurses a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getidMedics());
+            stat.setInt(1,a.getNursesId());
             stat.setString(2,a.getFirstName());
-            stat.setString(2,a.getLastName());
-            stat.setInt(4,a.getRoomId());
-            stat.setInt(5,a.getDoctorOfficeId());
+            stat.setString(3,a.getLastName());
+            stat.setInt(4,a.getChirophaneRoomId());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
@@ -78,11 +76,11 @@ public class MedicsDAO implements IMedicsDAO {
     }
 
     @Override
-    public void delete(Medics a) throws DAOException {
+    public void delete(Nurses a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(DELETE);
-            stat.setInt(1,a.getidMedics());
+            stat.setInt(1,a.getNursesId());
 
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
@@ -101,26 +99,25 @@ public class MedicsDAO implements IMedicsDAO {
         }
     }
 
-    private Medics convert (ResultSet rs) throws SQLException {
-        int idMedics = rs.getInt("idMedics");
+    private Nurses convert (ResultSet rs) throws SQLException {
+        int nursesId = rs.getInt("nursesId");
         String firstName = rs.getString("firstName");
         String lastName = rs.getString("lastName");
-        int roomId = rs.getInt("roomId");
-        int doctorOfficeId = rs.getInt("doctorOfficeId");
-        Medics medics = new Medics(idMedics,firstName,lastName,roomId,doctorOfficeId);
-        return medics;
+        int chirophaneRoomId = rs.getInt("chirophaneRoomId");
+        Nurses nurse = new Nurses(nursesId,firstName,lastName,chirophaneRoomId);
+        return nurse;
     }
 
     @Override
-    public List<Medics> getList() throws DAOException {
+    public List<Nurses> getList() throws DAOException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        List<Medics> medicsList = new ArrayList<>();
+        List<Nurses> nursesList = new ArrayList<>();
         try{
             stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
             while(rs.next()) {
-                medicsList.add(convert(rs));
+                nursesList.add(convert(rs));
             }
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
@@ -139,14 +136,14 @@ public class MedicsDAO implements IMedicsDAO {
                     throw new DAOException("SQL Error.",e);
                 }
             }
-        } return medicsList;
+        } return nursesList;
     }
 
     @Override
-    public Medics getObject(Integer id) throws DAOException {
+    public Nurses getObject(Integer id) throws DAOException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        Medics a = null;
+        Nurses a = null;
         try{
             stat = conn.prepareStatement(GET_ONE);
             stat.setInt(1,id);

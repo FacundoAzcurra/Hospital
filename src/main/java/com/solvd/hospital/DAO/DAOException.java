@@ -1,4 +1,4 @@
-package com.solvd.hospital.services;
+package com.solvd.hospital.DAO;
 
 public class DAOException extends Exception  {
     public DAOException(String message) {

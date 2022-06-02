@@ -1,7 +1,7 @@
-package com.solvd.hospital.services.jdbcimpl;
+package com.solvd.hospital.DAO.jdbcimpl;
 
-import com.solvd.hospital.services.DAOException;
-import com.solvd.hospital.services.IRoomsDAO;
+import com.solvd.hospital.DAO.DAOException;
+import com.solvd.hospital.DAO.IRoomsDAO;
 import com.solvd.hospital.domain.Rooms;
 
 import java.sql.Connection;

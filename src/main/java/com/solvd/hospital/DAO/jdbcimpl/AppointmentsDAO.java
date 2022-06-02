@@ -1,7 +1,7 @@
-package com.solvd.hospital.services.jdbcimpl;
+package com.solvd.hospital.DAO.jdbcimpl;
 
-import com.solvd.hospital.services.IAppointmentsDAO;
-import com.solvd.hospital.services.DAOException;
+import com.solvd.hospital.DAO.IAppointmentsDAO;
+import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.domain.Appointments;
 
 import java.sql.Connection;

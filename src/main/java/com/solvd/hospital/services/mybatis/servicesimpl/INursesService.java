@@ -1,8 +1,8 @@
 package com.solvd.hospital.services.mybatis.servicesimpl;
 
 import com.solvd.hospital.domain.Nurses;
-import com.solvd.hospital.services.DAOException;
-import com.solvd.hospital.services.INursesDAO;
+import com.solvd.hospital.DAO.DAOException;
+import com.solvd.hospital.DAO.INursesDAO;
 import com.solvd.hospital.services.mybatis.NursesService;
 import com.solvd.hospital.util.Constants;
 import com.solvd.hospital.util.DBPropertiesUtil;

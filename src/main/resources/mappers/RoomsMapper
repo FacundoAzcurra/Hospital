@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.solvd.hospital.services.IRoomsDAO">
+<mapper namespace="com.solvd.hospital.DAO.IRoomsDAO">
     <resultMap id="RoomsResultMap" type="com.solvd.hospital.domain.Rooms" autoMapping="false">
         <result column="ID" property="idRooms" />
         <result column="isAvailable" property="isAvailable" />
