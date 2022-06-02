@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.hospital.services.IPrescriptionDAO">
+    <resultMap id="PrescriptionResultMap" type="com.solvd.hospital.domain.Prescription" autoMapping="false">
+        <result column="ID" property="prescriptionID" />
+        <result column="prescriptionPrice" property="prescriptionPrice" />
+        <result column="medicId" property="medicId" />
+        <result column="patientId" property="patientId" />
+    </resultMap>
+    <select id="getById" parameterType="int" resultMap="PrescriptionResultMap">
+        Select * from Prescription where ID =#{id}
+    </select>
+
+    <select id="getAll" resultMap="PrescriptionResultMap">
+        Select * from Prescription
+    </select>
+    <delete id="delete">
+        Delete from Prescription where ID = #{id}
+
+    </delete>
+    <insert id="save">
+        Insert into Prescription (prescriptionID,prescriptionPrice,medicId,patientId)
+        Values (#{prescriptionID},#{prescriptionPrice},#{medicId},#{patientId})
+
+    </insert>
+    <update id="update">
+        Update Prescription set
+        prescriptionID = #{prescriptionID},
+        prescriptionPrice = #{prescriptionPrice},
+        medicId = #{medicId},
+        patientId = #{patientId}
+        where ID = #{id}
+    </update>
+</mapper>

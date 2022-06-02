@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Medics {
-    int medicId;
+    int idMedics;
     String firstName;
     String lastName;
     int roomId;
@@ -14,20 +14,20 @@ public class Medics {
     public Medics() {
     }
 
-    public Medics(int medicId, String firstName, String lastName, int roomId, int doctorOfficeId) {
-        this.medicId = medicId;
+    public Medics(int idMedics, String firstName, String lastName, int roomId, int doctorOfficeId) {
+        this.idMedics = idMedics;
         this.firstName = firstName;
         this.lastName = lastName;
         this.roomId = roomId;
         this.doctorOfficeId = doctorOfficeId;
     }
 
-    public int getMedicId() {
-        return medicId;
+    public int getidMedics() {
+        return idMedics;
     }
 
-    public void setMedicId(int medicId) {
-        this.medicId = medicId;
+    public void setidMedics(int idMedics) {
+        this.idMedics = idMedics;
     }
 
     public String getFirstName() {
@@ -75,7 +75,7 @@ public class Medics {
     @Override
     public String toString() {
         return "Medics{" +
-                "medicId=" + medicId +
+                "idMedics=" + idMedics +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", roomId=" + roomId +

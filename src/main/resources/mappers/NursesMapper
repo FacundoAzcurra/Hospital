@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.hospital.services.INursesDAO">
+    <resultMap id="NursesResultMap" type="com.solvd.hospital.domain.Nurses" autoMapping="false">
+        <result column="ID" property="nursesId" />
+        <result column="last_Name" property="lastName" />
+        <result column="first_Name" property="firstName" />
+        <result column="chirophane_Room_ID" property="chirophaneRoomId" />
+    </resultMap>
+    <select id="getById" parameterType="int" resultMap="NursesResultMap">
+        Select * from Nurses where ID =#{id}
+    </select>
+
+    <select id="getAll" resultMap="NursesResultMap">
+        Select * from Nurses
+    </select>
+    <delete id="delete">
+        Delete from Nurses where ID = #{id}
+
+    </delete>
+    <insert id="save">
+        Insert into Nurses (nursesId,lastName,firstName,chirophaneRoomId)
+        Values (#{nursesId},#{lastName},#{firstName},#{chirophaneRoomId})
+
+    </insert>
+    <update id="update">
+        Update Nurses set
+        lastName = #{lastName},
+        firstName = #{firstName},
+        chirophaneRoomId = #{chirophaneRoomId}
+        where ID = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.hospital.services.IAppointmentsDAO">
+    <resultMap id="AppointmentsResultMap" type="com.solvd.hospital.domain.Appointments" autoMapping="false">
+        <result column="ID" property="appointmentID" />
+        <result column="medicId" property="medicId" />
+        <result column="appointmentRoomId" property="appointmentRoomId" />
+        <result column="patientId" property="patientId" />
+    </resultMap>
+    <select id="getById" parameterType="int" resultMap="AppointmentResultMap">
+        Select * from Appointments where ID =#{id}
+    </select>
+
+    <select id="getAll" resultMap="AppointmentsResultMap">
+        Select * from Appointments
+    </select>
+    <delete id="delete">
+        Delete from Appointments where ID = #{id}
+
+    </delete>
+    <insert id="save">
+        Insert into Appointments (appointmentID,medicId,appointmentRoomId,patientId)
+        Values (#{appointmentId},#{medicId},#{appointmentRoomId},#{patientId})
+
+    </insert>
+    <update id="update">
+        Update Nurses set
+        appointmentID = #{appointmentId},
+        medicId = #{medicId},
+        appointmentRoomId = #{appointmentRoomId},
+        patientId = #{patientId}
+        where ID = #{id}
+    </update>
+</mapper>

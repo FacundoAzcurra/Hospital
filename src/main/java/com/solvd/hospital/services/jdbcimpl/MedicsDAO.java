@@ -13,11 +13,11 @@ import java.util.List;
 
 public class MedicsDAO implements IMedicsDAO {
 
-    private final static String  INSERT = "INSERT INTO Medics(medicsId, firstName, lastName, roomId, doctorOfficeId) VALUES (?,?,?,?,?) ";
-    private final static String  UPDATE = "UPDATE Medics SET medicsId = ?, firstName = ?, lastName = ?, roomId = ?, doctorOfficeId = ? WHERE medicsId = ?)";
-    private final static String DELETE = "DELETE FROM Medics where medicsId = ?";
-    private final static String GET_ALL = "SELECT medicsId, firstName, lastName, roomId, doctorOfficeId";
-    private final static String GET_ONE = "SELECT medicsId, firstName, lastName, roomId, doctorOfficeId FROM Medics WHERE medicsId = ?";
+    private final static String  INSERT = "INSERT INTO Medics(idMedics, firstName, lastName, roomId, doctorOfficeId) VALUES (?,?,?,?,?) ";
+    private final static String  UPDATE = "UPDATE Medics SET idMedics = ?, firstName = ?, lastName = ?, roomId = ?, doctorOfficeId = ? WHERE idMedics = ?)";
+    private final static String DELETE = "DELETE FROM Medics where idMedics = ?";
+    private final static String GET_ALL = "SELECT idMedics, firstName, lastName, roomId, doctorOfficeId";
+    private final static String GET_ONE = "SELECT idMedics, firstName, lastName, roomId, doctorOfficeId FROM Medics WHERE idMedics = ?";
 
     private Connection conn;
 
@@ -29,7 +29,7 @@ public class MedicsDAO implements IMedicsDAO {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(INSERT);
-            stat.setInt(1,a.getMedicId());
+            stat.setInt(1,a.getidMedics());
             stat.setString(2,a.getFirstName());
             stat.setString(2,a.getLastName());
             stat.setInt(4,a.getRoomId());
@@ -56,7 +56,7 @@ public class MedicsDAO implements IMedicsDAO {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getMedicId());
+            stat.setInt(1,a.getidMedics());
             stat.setString(2,a.getFirstName());
             stat.setString(2,a.getLastName());
             stat.setInt(4,a.getRoomId());
@@ -82,7 +82,7 @@ public class MedicsDAO implements IMedicsDAO {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(DELETE);
-            stat.setInt(1,a.getMedicId());
+            stat.setInt(1,a.getidMedics());
 
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
@@ -102,12 +102,12 @@ public class MedicsDAO implements IMedicsDAO {
     }
 
     private Medics convert (ResultSet rs) throws SQLException {
-        int medicId = rs.getInt("medicId");
+        int idMedics = rs.getInt("idMedics");
         String firstName = rs.getString("firstName");
         String lastName = rs.getString("lastName");
         int roomId = rs.getInt("roomId");
         int doctorOfficeId = rs.getInt("doctorOfficeId");
-        Medics medics = new Medics(medicId,firstName,lastName,roomId,doctorOfficeId);
+        Medics medics = new Medics(idMedics,firstName,lastName,roomId,doctorOfficeId);
         return medics;
     }
 

@@ -14,6 +14,10 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="userMap.xml"/>
+        <mapper resource="mappers/NursesMapper.xml"/>
+        <mapper resource="mappers/AppointmentsMapper.xml"/>
+        <mapper resource="mappers/MedicsMapper.xml"/>
+        <mapper resource="mappers/PrescriptionMapper.xml"/>
+        <mapper resource="mappers/RoomsMapper.xml"/>
     </mappers>
 </configuration>

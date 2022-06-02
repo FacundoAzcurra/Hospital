@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.hospital.services.IRoomsDAO">
+    <resultMap id="RoomsResultMap" type="com.solvd.hospital.domain.Rooms" autoMapping="false">
+        <result column="ID" property="idRooms" />
+        <result column="isAvailable" property="isAvailable" />
+        <result column="floor" property="floor" />
+        <result column="doctorOfficeId" property="doctorOfficeId" />
+    </resultMap>
+    <select id="getById" parameterType="int" resultMap="RoomsResultMap">
+        Select * from Rooms where ID =#{id}
+    </select>
+
+    <select id="getAll" resultMap="PrescriptionResultMap">
+        Select * from Rooms
+    </select>
+    <delete id="delete">
+        Delete from Rooms where ID = #{id}
+
+    </delete>
+    <insert id="save">
+        Insert into Rooms (idRooms,isAvailable,floor,doctorOfficeId)
+        Values (#{idRooms},#{isAvailable},#{floor},#{doctorOfficeId})
+
+    </insert>
+    <update id="update">
+        Update Rooms set
+        idRooms = #{idRooms},
+        isAvailable = #{isAvailable},
+        floor = #{floor},
+        doctorOfficeId = #{doctorOfficeId}
+        where ID = #{id}
+    </update>
+</mapper>
