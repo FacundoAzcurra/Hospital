@@ -519,19 +519,19 @@ public class App {
                 MedicsService ms = new MedicsService();
                 List<Medics> medics = ms.getMedics();
                 medics.stream().forEach(medic -> LOG.info(medic));
-                LOG.info("------------------------------------");
-                ms.saveMedic(new Medics(5,"Nico","ThaiProfessor",4,4));
+                LOG.info("-----------------PRINTED TABLE-------------------");
+                ms.saveMedic(new Medics(6,"Nico","ThaiProfessor",4,4));
                 medics = ms.getMedics();
                 medics.stream().forEach(medic -> LOG.info(medic));
-                LOG.info("------------------------------------");
-                ms.updateMedicById(5,new Medics(5,"Pani","Strange",4,4));
+                LOG.info("-----------------PRINTED TABLE WITH NEW MEDIC-------------------");
+                ms.updateMedicById(6,new Medics(5,"Pani","Strange",4,4));
                 medics = ms.getMedics();
                 medics.stream().forEach(medic -> LOG.info(medic));
-                LOG.info("------------------------------------");
-                ms.deleteMedic(5);
+                LOG.info("-----------------PRINTED TABLE WITH UPDATED MEDIC-------------------");
+                ms.deleteMedic(6);
                 medics = ms.getMedics();
                 medics.stream().forEach(medic -> LOG.info(medic));
-                LOG.info("------------------------------------");
+                LOG.info("-----------------PRINTED TABLE WITH DELETED MEDIC-------------------");
                 break;
 
             default:
