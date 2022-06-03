@@ -2,7 +2,9 @@ package com.solvd.hospital.runner;
 import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.DAO.IRoomsDAO;
 import com.solvd.hospital.DAO.jdbcimpl.RoomsDAO;
+import com.solvd.hospital.domain.Medics;
 import com.solvd.hospital.domain.Rooms;
+import com.solvd.hospital.services.mybatis.servicesimpl.MedicsService;
 import com.solvd.hospital.util.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +20,12 @@ public class App {
 
     public static void main(String[] args) throws DAOException,SQLException {
 
+        LOG.info("1.JDBC\n2.myBatis");
+        Scanner scoptiondriver = new Scanner(System.in);
+        int optiondriver;
+        optiondriver = scoptiondriver.nextInt();
+        switch (optiondriver){
+            case 1:
         LOG.info("Select a table to work in. \n1. Rooms  \n2. Appointments \n3. Medics \n4. Prescriptions \n5. Nurses ");
         Scanner scoption = new Scanner(System.in);
         int option;
@@ -31,8 +39,8 @@ public class App {
                 roomsopt = scrooms.nextInt();
                 switch (roomsopt) {
                     case 1:
-                        try(Connection connection = ConnectionPool.getInstance().getConnection()){
-                            IRoomsDAO room = new RoomsDAO(connection);
+                        try(Connection conn = ConnectionPool.getInstance().getConnection()){
+                            IRoomsDAO room = new RoomsDAO();
                             Rooms room5 = new Rooms(5,false,2,4,5);
                             room.insert(room5);
                             LOG.info("Room inserted.");
@@ -47,13 +55,13 @@ public class App {
                         break;
                     case 4:
                         LOG.info("Getting all rooms objects...");
-                    try (Connection connection = ConnectionPool.getInstance().getConnection()) {
-                        IRoomsDAO room = new RoomsDAO(connection);
+                    try (Connection conn = ConnectionPool.getInstance().getConnection()) {
+                        IRoomsDAO room = new RoomsDAO();
                         List<Rooms> roomsList = room.getList();
                         for (Rooms u : roomsList) {
                             LOG.info(u.toString());
                         }
-                        if (connection != null) {
+                        if (conn != null) {
                             LOG.info("You are inside");
                         } else {
                             LOG.info("Connection error.");
@@ -83,8 +91,28 @@ public class App {
             default:
                 LOG.info("Please select a valid option");
                 break;
+
+            }
+            case 2:
+                //myBatis every service working.(Medics Service example)
+                MedicsService ms = new MedicsService();
+                List<Medics> medics = ms.getMedics();
+                medics.stream().forEach(medic -> LOG.info(medic));
+                LOG.info("------------------------------------");
+                ms.saveMedic(new Medics(5,"Nico","ThaiProfessor",4,4));
+                medics = ms.getMedics();
+                medics.stream().forEach(medic -> LOG.info(medic));
+                LOG.info("------------------------------------");
+                ms.updateMedicById(5,new Medics(5,"Pani","Strange",4,4));
+                medics = ms.getMedics();
+                medics.stream().forEach(medic -> LOG.info(medic));
+                LOG.info("------------------------------------");
+                ms.deleteMedic(5);
+                medics = ms.getMedics();
+                medics.stream().forEach(medic -> LOG.info(medic));
+                LOG.info("------------------------------------");
         }
-    }
+}
 }
 
 

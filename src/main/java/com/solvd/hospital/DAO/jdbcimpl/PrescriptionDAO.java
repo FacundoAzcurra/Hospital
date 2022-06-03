@@ -4,6 +4,7 @@ import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.DAO.IPrescriptionDAO;
 import com.solvd.hospital.domain.Prescription;
 
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrescriptionDAO implements IPrescriptionDAO {
+public class PrescriptionDAO extends AbstractDAO implements IPrescriptionDAO {
 
     private final static String  INSERT = "INSERT INTO Prescription(prescriptionID, prescriptionPrice, medicId, patientId) VALUES (?,?,?,?) ";
     private final static String  UPDATE = "UPDATE Prescription SET prescriptionID = ?, prescriptionPrice = ?, medicId = ?, patientId = ? WHERE prescriptionID = ?)";
@@ -19,14 +20,11 @@ public class PrescriptionDAO implements IPrescriptionDAO {
     private final static String GET_ALL = "SELECT prescriptionID, prescriptionPrice, medicId, patientId";
     private final static String GET_ONE = "SELECT prescriptionID, prescriptionPrice, medicId, patientId FROM Prescription WHERE prescriptionID = ?";
 
-    private Connection conn;
 
-    public PrescriptionDAO(Connection conn) {
-        this.conn = conn;
-    }
     @Override
-    public void insert(Prescription a) throws DAOException {
+    public void insert(Prescription a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(INSERT);
             stat.setInt(1,a.getPrescriptionID());
@@ -40,6 +38,7 @@ public class PrescriptionDAO implements IPrescriptionDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -50,8 +49,9 @@ public class PrescriptionDAO implements IPrescriptionDAO {
         }
     }
     @Override
-    public void update(Prescription a) throws DAOException {
+    public void update(Prescription a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(UPDATE);
             stat.setInt(1,a.getPrescriptionID());
@@ -64,6 +64,7 @@ public class PrescriptionDAO implements IPrescriptionDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -75,8 +76,9 @@ public class PrescriptionDAO implements IPrescriptionDAO {
     }
 
     @Override
-    public void delete(int a) throws DAOException {
+    public void delete(int a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(DELETE);
             stat.setInt(1,a);
@@ -88,6 +90,7 @@ public class PrescriptionDAO implements IPrescriptionDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -108,10 +111,11 @@ public class PrescriptionDAO implements IPrescriptionDAO {
     }
 
     @Override
-    public List<Prescription> getList() throws DAOException {
+    public List<Prescription> getList() throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         List<Prescription> prescriptionList = new ArrayList<>();
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
@@ -121,6 +125,7 @@ public class PrescriptionDAO implements IPrescriptionDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
+            returnConnection(conn);
             if(rs!=null){
                 try{
                     rs.close();
@@ -139,10 +144,11 @@ public class PrescriptionDAO implements IPrescriptionDAO {
     }
 
     @Override
-    public Prescription getObject(Integer id) throws DAOException {
+    public Prescription getObject(Integer id) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         Prescription a = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ONE);
             stat.setInt(1,id);
@@ -157,6 +163,7 @@ public class PrescriptionDAO implements IPrescriptionDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
+            returnConnection(conn);
             if(rs!=null){
                 try{
                     rs.close();

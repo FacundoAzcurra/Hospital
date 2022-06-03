@@ -4,6 +4,7 @@ import com.solvd.hospital.DAO.IAppointmentsDAO;
 import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.domain.Appointments;
 
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppointmentsDAO implements IAppointmentsDAO {
+public class AppointmentsDAO extends AbstractDAO implements IAppointmentsDAO {
 
     private final static String INSERT = "INSERT INTO Appointments(appointmentID, medicId, appointmentRoomID, patientId) VALUES (?,?,?,?) ";
     private final static String UPDATE = "UPDATE Appointments SET appointmentID = ?, medicId = ?, appointmentRoomID = ?, patientId = ? WHERE appointmentID = ?)";
@@ -19,14 +20,10 @@ public class AppointmentsDAO implements IAppointmentsDAO {
     private final static String GET_ALL = "SELECT appointmentID, medicId, appointmentRoomID, patientId FROM Appointments";
     private final static String GET_ONE = "SELECT appointmentID, medicId, appointmentRoomID, patientId FROM Appointments WHERE appointmentId = ?";
 
-    private Connection conn;
-
-    public AppointmentsDAO(Connection conn) {
-        this.conn = conn;
-    }
     @Override
-    public void insert(Appointments a) throws DAOException {
+    public void insert(Appointments a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(INSERT);
             stat.setInt(1,a.getAppointmentID());
@@ -40,6 +37,7 @@ public class AppointmentsDAO implements IAppointmentsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -51,8 +49,9 @@ public class AppointmentsDAO implements IAppointmentsDAO {
     }
 
     @Override
-    public void update(Appointments a) throws DAOException {
+    public void update(Appointments a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(UPDATE);
             stat.setInt(1,a.getAppointmentID());
@@ -65,6 +64,7 @@ public class AppointmentsDAO implements IAppointmentsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -76,8 +76,9 @@ public class AppointmentsDAO implements IAppointmentsDAO {
     }
 
     @Override
-    public void delete(int a) throws DAOException {
+    public void delete(int a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(DELETE);
             stat.setInt(1,a);
@@ -89,6 +90,7 @@ public class AppointmentsDAO implements IAppointmentsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -109,10 +111,11 @@ public class AppointmentsDAO implements IAppointmentsDAO {
     }
 
     @Override
-    public List<Appointments> getList() throws DAOException {
+    public List<Appointments> getList() throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         List<Appointments> appointmentsList = new ArrayList<>();
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
@@ -122,6 +125,7 @@ public class AppointmentsDAO implements IAppointmentsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
+            returnConnection(conn);
             if(rs!=null){
                 try{
                     rs.close();
@@ -140,10 +144,11 @@ public class AppointmentsDAO implements IAppointmentsDAO {
     }
 
     @Override
-    public Appointments getObject(Integer id) throws DAOException {
+    public Appointments getObject(Integer id) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         Appointments a = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ONE);
             stat.setInt(1,id);
@@ -158,6 +163,7 @@ public class AppointmentsDAO implements IAppointmentsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
+            returnConnection(conn);
             if(rs!=null){
                 try{
                     rs.close();

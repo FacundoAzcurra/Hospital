@@ -4,6 +4,7 @@ import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.domain.Nurses;
 import com.solvd.hospital.DAO.INursesDAO;
 
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NursesDAO implements INursesDAO {
+public class NursesDAO extends AbstractDAO implements INursesDAO {
 
     private final static String  INSERT = "INSERT INTO Nurses(nursesId, firstName, lastName, chirophaneRoomId) VALUES (?,?,?,?) ";
     private final static String  UPDATE = "UPDATE Nurses SET nursesId = ?, firstName = ?, lastName = ?, chirophaneRoomId = ? WHERE nursesId = ?)";
@@ -19,14 +20,10 @@ public class NursesDAO implements INursesDAO {
     private final static String GET_ALL = "SELECT nursesId, firstName, lastName, chirophaneRoomId FROM Nurses";
     private final static String GET_ONE = "SELECT nursesId, firstName, lastName, chirophaneRoomId FROM Nurses WHERE nursesId = ?";
 
-    private Connection conn;
-
-    public NursesDAO(Connection conn) {
-        this.conn = conn;
-    }
     @Override
-    public void insert(Nurses a) throws DAOException {
+    public void insert(Nurses a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(INSERT);
             stat.setInt(1,a.getNursesId());
@@ -40,6 +37,7 @@ public class NursesDAO implements INursesDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -51,8 +49,9 @@ public class NursesDAO implements INursesDAO {
     }
 
     @Override
-    public void update(Nurses a) throws DAOException {
+    public void update(Nurses a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(UPDATE);
             stat.setInt(1,a.getNursesId());
@@ -65,6 +64,7 @@ public class NursesDAO implements INursesDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -76,8 +76,9 @@ public class NursesDAO implements INursesDAO {
     }
 
     @Override
-    public void delete(int a) throws DAOException {
+    public void delete(int a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(DELETE);
             stat.setInt(1,a);
@@ -89,6 +90,7 @@ public class NursesDAO implements INursesDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -109,10 +111,11 @@ public class NursesDAO implements INursesDAO {
     }
 
     @Override
-    public List<Nurses> getList() throws DAOException {
+    public List<Nurses> getList() throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         List<Nurses> nursesList = new ArrayList<>();
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
@@ -122,6 +125,7 @@ public class NursesDAO implements INursesDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
+            returnConnection(conn);
             if(rs!=null){
                 try{
                     rs.close();
@@ -140,10 +144,11 @@ public class NursesDAO implements INursesDAO {
     }
 
     @Override
-    public Nurses getObject(Integer id) throws DAOException {
+    public Nurses getObject(Integer id) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         Nurses a = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ONE);
             stat.setInt(1,id);
@@ -158,6 +163,7 @@ public class NursesDAO implements INursesDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
+            returnConnection(conn);
             if(rs!=null){
                 try{
                     rs.close();

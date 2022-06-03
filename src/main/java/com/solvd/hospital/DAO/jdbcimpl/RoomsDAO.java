@@ -4,6 +4,7 @@ import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.DAO.IRoomsDAO;
 import com.solvd.hospital.domain.Rooms;
 
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomsDAO implements IRoomsDAO {
+public class RoomsDAO extends AbstractDAO implements IRoomsDAO {
 
     private final static String  INSERT = "INSERT INTO Rooms(idRooms, isAvailable, floor, MedicId, DoctorOfficeId) VALUES (?,?,?,?,?) ";
     private final static String  UPDATE = "UPDATE Rooms SET isAvailable = ?, floor = ?, MedicId = ?, DoctorOfficeId = ? WHERE idRooms = ?)";
@@ -19,14 +20,11 @@ public class RoomsDAO implements IRoomsDAO {
     private final static String GET_ALL = "SELECT idRooms, isAvailable, floor, MedicId, DoctorOfficeId FROM Rooms";
     private final static String GET_ONE = "SELECT idRooms, isAvailable, floor, MedicId, DoctorOfficeId FROM Rooms WHERE idRooms = ?";
 
-    private Connection conn;
 
-    public RoomsDAO(Connection conn) {
-        this.conn = conn;
-    }
     @Override
-    public void insert(Rooms a) throws DAOException {
+    public void insert(Rooms a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(INSERT);
             stat.setInt(1,a.getidRooms());
@@ -41,6 +39,7 @@ public class RoomsDAO implements IRoomsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -52,8 +51,9 @@ public class RoomsDAO implements IRoomsDAO {
     }
 
     @Override
-    public void update(Rooms a) throws DAOException {
+    public void update(Rooms a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(UPDATE);
             stat.setInt(1,a.getidRooms());
@@ -67,6 +67,7 @@ public class RoomsDAO implements IRoomsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -78,8 +79,9 @@ public class RoomsDAO implements IRoomsDAO {
     }
 
     @Override
-    public void delete(int a) throws DAOException {
+    public void delete(int a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(DELETE);
             stat.setInt(1,a);
@@ -91,6 +93,7 @@ public class RoomsDAO implements IRoomsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -113,10 +116,11 @@ public class RoomsDAO implements IRoomsDAO {
     }
 
     @Override
-    public List<Rooms> getList() throws DAOException {
+    public List<Rooms> getList() throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         List<Rooms> roomsList = new ArrayList<>();
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
@@ -126,6 +130,7 @@ public class RoomsDAO implements IRoomsDAO {
             } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
+            returnConnection(conn);
             if(rs!=null){
                 try{
                     rs.close();
@@ -145,10 +150,11 @@ public class RoomsDAO implements IRoomsDAO {
     }
 
     @Override
-    public Rooms getObject(Integer id) throws DAOException {
+    public Rooms getObject(Integer id) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         Rooms a = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ONE);
             stat.setInt(1,id);
@@ -163,6 +169,7 @@ public class RoomsDAO implements IRoomsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
+            returnConnection(conn);
             if(rs!=null){
                 try{
                     rs.close();

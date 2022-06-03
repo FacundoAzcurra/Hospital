@@ -4,6 +4,7 @@ import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.DAO.IMedicsDAO;
 import com.solvd.hospital.domain.Medics;
 
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicsDAO implements IMedicsDAO {
+public class MedicsDAO extends AbstractDAO implements IMedicsDAO {
 
     private final static String  INSERT = "INSERT INTO Medics(idMedics, firstName, lastName, roomId, doctorOfficeId) VALUES (?,?,?,?,?) ";
     private final static String  UPDATE = "UPDATE Medics SET idMedics = ?, firstName = ?, lastName = ?, roomId = ?, doctorOfficeId = ? WHERE idMedics = ?)";
@@ -19,14 +20,10 @@ public class MedicsDAO implements IMedicsDAO {
     private final static String GET_ALL = "SELECT idMedics, firstName, lastName, roomId, doctorOfficeId";
     private final static String GET_ONE = "SELECT idMedics, firstName, lastName, roomId, doctorOfficeId FROM Medics WHERE idMedics = ?";
 
-    private Connection conn;
-
-    public MedicsDAO(Connection conn) {
-        this.conn = conn;
-    }
     @Override
-    public void insert(Medics a) throws DAOException {
+    public void insert(Medics a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(INSERT);
             stat.setInt(1,a.getidMedics());
@@ -42,6 +39,7 @@ public class MedicsDAO implements IMedicsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -52,8 +50,9 @@ public class MedicsDAO implements IMedicsDAO {
         }
     }
     @Override
-    public void update(Medics a) throws DAOException {
+    public void update(Medics a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(UPDATE);
             stat.setInt(1,a.getidMedics());
@@ -67,6 +66,7 @@ public class MedicsDAO implements IMedicsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -78,8 +78,9 @@ public class MedicsDAO implements IMedicsDAO {
     }
 
     @Override
-    public void delete(int a) throws DAOException {
+    public void delete(int a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(DELETE);
             stat.setInt(1,a);
@@ -91,6 +92,7 @@ public class MedicsDAO implements IMedicsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
+            returnConnection(conn);
             if (stat != null){
                 try{
                     stat.close();
@@ -112,10 +114,11 @@ public class MedicsDAO implements IMedicsDAO {
     }
 
     @Override
-    public List<Medics> getList() throws DAOException {
+    public List<Medics> getList() throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         List<Medics> medicsList = new ArrayList<>();
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
@@ -125,6 +128,7 @@ public class MedicsDAO implements IMedicsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
+            returnConnection(conn);
             if(rs!=null){
                 try{
                     rs.close();
@@ -143,10 +147,11 @@ public class MedicsDAO implements IMedicsDAO {
     }
 
     @Override
-    public Medics getObject(Integer id) throws DAOException {
+    public Medics getObject(Integer id) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
         Medics a = null;
+        Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ONE);
             stat.setInt(1,id);
@@ -161,6 +166,7 @@ public class MedicsDAO implements IMedicsDAO {
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
+            returnConnection(conn);
             if(rs!=null){
                 try{
                     rs.close();
