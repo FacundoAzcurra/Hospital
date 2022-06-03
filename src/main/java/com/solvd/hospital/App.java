@@ -1,4 +1,4 @@
-package com.solvd.hospital.runner;
+package com.solvd.hospital;
 import com.solvd.hospital.DAO.*;
 import com.solvd.hospital.DAO.jdbcimpl.*;
 import com.solvd.hospital.bin.*;
@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.ConnectException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
