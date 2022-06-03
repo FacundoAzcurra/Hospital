@@ -1,7 +1,6 @@
 package com.solvd.hospital.DAO;
 
-import com.solvd.hospital.DAO.DAO;
-import com.solvd.hospital.domain.Rooms;
+import com.solvd.hospital.bin.Rooms;
 
 public interface IRoomsDAO extends DAO<Rooms, Integer> {
 }

@@ -1,7 +1,7 @@
 package com.solvd.hospital.DAO.jdbcimpl;
 
 import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.domain.Nurses;
+import com.solvd.hospital.bin.Nurses;
 import com.solvd.hospital.DAO.INursesDAO;
 
 import java.net.ConnectException;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public class NursesDAO extends AbstractDAO implements INursesDAO {
 
-    private final static String  INSERT = "INSERT INTO Nurses(nursesId, firstName, lastName, chirophaneRoomId) VALUES (?,?,?,?) ";
-    private final static String  UPDATE = "UPDATE Nurses SET nursesId = ?, firstName = ?, lastName = ?, chirophaneRoomId = ? WHERE nursesId = ?)";
-    private final static String DELETE = "DELETE FROM Nurses where nursesId = ?";
-    private final static String GET_ALL = "SELECT nursesId, firstName, lastName, chirophaneRoomId FROM Nurses";
-    private final static String GET_ONE = "SELECT nursesId, firstName, lastName, chirophaneRoomId FROM Nurses WHERE nursesId = ?";
+    private final static String  INSERT = "INSERT INTO Nurses(idNurses, firstName, lastName, chirophaneRoomId) VALUES (?,?,?,?) ";
+    private final static String  UPDATE = "UPDATE Nurses SET firstName = ?, lastName = ?, chirophaneRoomId = ? WHERE idNurses = ?";
+    private final static String DELETE = "DELETE FROM Nurses where idNurses = ?";
+    private final static String GET_ALL = "SELECT idNurses, firstName, lastName, chirophaneRoomId FROM Nurses";
+    private final static String GET_ONE = "SELECT idNurses, firstName, lastName, chirophaneRoomId FROM Nurses WHERE idNurses = ?";
 
     @Override
     public void insert(Nurses a) throws DAOException, ConnectException {
@@ -54,10 +54,11 @@ public class NursesDAO extends AbstractDAO implements INursesDAO {
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getNursesId());
-            stat.setString(2,a.getFirstName());
-            stat.setString(3,a.getLastName());
-            stat.setInt(4,a.getChirophaneRoomId());
+
+            stat.setString(1,a.getFirstName());
+            stat.setString(2,a.getLastName());
+            stat.setInt(3,a.getChirophaneRoomId());
+            stat.setInt(4,a.getNursesId());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
@@ -102,7 +103,7 @@ public class NursesDAO extends AbstractDAO implements INursesDAO {
     }
 
     private Nurses convert (ResultSet rs) throws SQLException {
-        int nursesId = rs.getInt("nursesId");
+        int nursesId = rs.getInt("idNurses");
         String firstName = rs.getString("firstName");
         String lastName = rs.getString("lastName");
         int chirophaneRoomId = rs.getInt("chirophaneRoomId");
@@ -155,11 +156,9 @@ public class NursesDAO extends AbstractDAO implements INursesDAO {
             rs = stat.executeQuery();
             if (rs.next()) {
                 a = convert(rs);
-
             } else {
                 throw new DAOException("Register not found.");
             }
-
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {

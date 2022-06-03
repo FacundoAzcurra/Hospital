@@ -1,7 +1,7 @@
 package com.solvd.hospital.services.mybatis.servicesimpl;
 
 
-import com.solvd.hospital.domain.Medics;
+import com.solvd.hospital.bin.Medics;
 import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.DAO.IMedicsDAO;
 import com.solvd.hospital.services.mybatis.IMedicsService;

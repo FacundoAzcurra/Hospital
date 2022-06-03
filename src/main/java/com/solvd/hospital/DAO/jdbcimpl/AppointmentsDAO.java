@@ -2,7 +2,7 @@ package com.solvd.hospital.DAO.jdbcimpl;
 
 import com.solvd.hospital.DAO.IAppointmentsDAO;
 import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.domain.Appointments;
+import com.solvd.hospital.bin.Appointments;
 
 import java.net.ConnectException;
 import java.sql.Connection;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public class AppointmentsDAO extends AbstractDAO implements IAppointmentsDAO {
 
-    private final static String INSERT = "INSERT INTO Appointments(appointmentID, medicId, appointmentRoomID, patientId) VALUES (?,?,?,?) ";
-    private final static String UPDATE = "UPDATE Appointments SET appointmentID = ?, medicId = ?, appointmentRoomID = ?, patientId = ? WHERE appointmentID = ?)";
-    private final static String DELETE = "DELETE FROM appointments where appointmentID = ?";
-    private final static String GET_ALL = "SELECT appointmentID, medicId, appointmentRoomID, patientId FROM Appointments";
-    private final static String GET_ONE = "SELECT appointmentID, medicId, appointmentRoomID, patientId FROM Appointments WHERE appointmentId = ?";
+    private final static String INSERT = "INSERT INTO Appointments(idAppointments, medicId, appointmentRoomID, patientId) VALUES (?,?,?,?) ";
+    private final static String UPDATE = "UPDATE Appointments SET medicId = ?, appointmentRoomID = ?, patientId = ? WHERE idAppointments = ?";
+    private final static String DELETE = "DELETE FROM Appointments where idAppointments = ?";
+    private final static String GET_ALL = "SELECT idAppointments, medicId, appointmentRoomID, patientId FROM Appointments";
+    private final static String GET_ONE = "SELECT idAppointments, medicId, appointmentRoomID, patientId FROM Appointments WHERE idAppointments = ?";
 
     @Override
     public void insert(Appointments a) throws DAOException, ConnectException {
@@ -54,10 +54,10 @@ public class AppointmentsDAO extends AbstractDAO implements IAppointmentsDAO {
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getAppointmentID());
-            stat.setInt(2,a.getMedicId());
-            stat.setInt(3,a.getAppointmentRoomID());
-            stat.setInt(4,a.getPatientId());
+            stat.setInt(1,a.getMedicId());
+            stat.setInt(2,a.getAppointmentRoomID());
+            stat.setInt(3,a.getPatientId());
+            stat.setInt(4,a.getAppointmentID());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
@@ -102,7 +102,7 @@ public class AppointmentsDAO extends AbstractDAO implements IAppointmentsDAO {
     }
 
     private Appointments convert (ResultSet rs) throws SQLException {
-        int appointmentId = rs.getInt("appointmentId");
+        int appointmentId = rs.getInt("idAppointments");
         int medicId = rs.getInt("medicId");
         int appointmentRoomId = rs.getInt("appointmentRoomId");
         int patientId = rs.getInt("patientId");

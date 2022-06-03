@@ -1,7 +1,6 @@
 package com.solvd.hospital.services.mybatis;
 
-import com.solvd.hospital.domain.Appointments;
-import com.solvd.hospital.domain.Rooms;
+import com.solvd.hospital.bin.Appointments;
 
 import java.util.List;
 

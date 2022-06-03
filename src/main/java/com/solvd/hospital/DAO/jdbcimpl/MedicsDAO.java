@@ -2,7 +2,7 @@ package com.solvd.hospital.DAO.jdbcimpl;
 
 import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.DAO.IMedicsDAO;
-import com.solvd.hospital.domain.Medics;
+import com.solvd.hospital.bin.Medics;
 
 import java.net.ConnectException;
 import java.sql.Connection;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public class MedicsDAO extends AbstractDAO implements IMedicsDAO {
 
-    private final static String  INSERT = "INSERT INTO Medics(idMedics, firstName, lastName, roomId, doctorOfficeId) VALUES (?,?,?,?,?) ";
-    private final static String  UPDATE = "UPDATE Medics SET idMedics = ?, firstName = ?, lastName = ?, roomId = ?, doctorOfficeId = ? WHERE idMedics = ?)";
+    private final static String INSERT = "INSERT INTO Medics(idMedics, firstName, lastName, RoomId, DoctorOfficeId) VALUES (?,?,?,?,?) ";
+    private final static String UPDATE = "UPDATE Medics SET firstName = ?, lastName = ?, RoomId = ?, DoctorOfficeId = ? WHERE idMedics = ?";
     private final static String DELETE = "DELETE FROM Medics where idMedics = ?";
-    private final static String GET_ALL = "SELECT idMedics, firstName, lastName, roomId, doctorOfficeId";
-    private final static String GET_ONE = "SELECT idMedics, firstName, lastName, roomId, doctorOfficeId FROM Medics WHERE idMedics = ?";
+    private final static String GET_ALL = "SELECT idMedics, firstName, lastName, RoomId, DoctorOfficeId FROM Medics";
+    private final static String GET_ONE = "SELECT idMedics, firstName, lastName, RoomId, DoctorOfficeId FROM Medics WHERE idMedics = ?";
 
     @Override
     public void insert(Medics a) throws DAOException, ConnectException {
@@ -28,14 +28,13 @@ public class MedicsDAO extends AbstractDAO implements IMedicsDAO {
             stat = conn.prepareStatement(INSERT);
             stat.setInt(1,a.getidMedics());
             stat.setString(2,a.getFirstName());
-            stat.setString(2,a.getLastName());
+            stat.setString(3,a.getLastName());
             stat.setInt(4,a.getRoomId());
             stat.setInt(5,a.getDoctorOfficeId());
 
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
-
         } catch (SQLException e) {
             throw new DAOException("SQL ERROR",e);
         } finally {
@@ -55,11 +54,11 @@ public class MedicsDAO extends AbstractDAO implements IMedicsDAO {
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getidMedics());
-            stat.setString(2,a.getFirstName());
+            stat.setString(1,a.getFirstName());
             stat.setString(2,a.getLastName());
-            stat.setInt(4,a.getRoomId());
-            stat.setInt(5,a.getDoctorOfficeId());
+            stat.setInt(3,a.getRoomId());
+            stat.setInt(4,a.getDoctorOfficeId());
+            stat.setInt(5,a.getidMedics());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
@@ -107,8 +106,8 @@ public class MedicsDAO extends AbstractDAO implements IMedicsDAO {
         int idMedics = rs.getInt("idMedics");
         String firstName = rs.getString("firstName");
         String lastName = rs.getString("lastName");
-        int roomId = rs.getInt("roomId");
-        int doctorOfficeId = rs.getInt("doctorOfficeId");
+        int roomId = rs.getInt("RoomId");
+        int doctorOfficeId = rs.getInt("DoctorOfficeId");
         Medics medics = new Medics(idMedics,firstName,lastName,roomId,doctorOfficeId);
         return medics;
     }

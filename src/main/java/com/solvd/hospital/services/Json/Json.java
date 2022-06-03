@@ -1,7 +1,7 @@
 package com.solvd.hospital.services.Json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.solvd.hospital.domain.Patients;
+import com.solvd.hospital.bin.Patients;
 
 import java.io.*;
 import java.util.ArrayList;

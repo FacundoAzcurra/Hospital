@@ -1,21 +1,10 @@
 package com.solvd.hospital.services.mybatis;
 
-import com.solvd.hospital.domain.Appointments;
-import com.solvd.hospital.domain.Medics;
-import com.solvd.hospital.domain.Nurses;
-import com.solvd.hospital.domain.Rooms;
-import com.solvd.hospital.services.mybatis.servicesimpl.AppointmentsService;
+import com.solvd.hospital.bin.Medics;
 import com.solvd.hospital.services.mybatis.servicesimpl.MedicsService;
-import com.solvd.hospital.services.mybatis.servicesimpl.NursesService;
-import com.solvd.hospital.services.mybatis.servicesimpl.RoomsService;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.io.IOException;
-import java.io.Reader;
+
 import java.util.List;
 
 public class myBatisRunner {

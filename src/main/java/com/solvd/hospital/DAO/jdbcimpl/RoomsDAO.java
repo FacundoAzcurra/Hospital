@@ -2,7 +2,7 @@ package com.solvd.hospital.DAO.jdbcimpl;
 
 import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.DAO.IRoomsDAO;
-import com.solvd.hospital.domain.Rooms;
+import com.solvd.hospital.bin.Rooms;
 
 import java.net.ConnectException;
 import java.sql.Connection;
@@ -15,7 +15,7 @@ import java.util.List;
 public class RoomsDAO extends AbstractDAO implements IRoomsDAO {
 
     private final static String  INSERT = "INSERT INTO Rooms(idRooms, isAvailable, floor, MedicId, DoctorOfficeId) VALUES (?,?,?,?,?) ";
-    private final static String  UPDATE = "UPDATE Rooms SET isAvailable = ?, floor = ?, MedicId = ?, DoctorOfficeId = ? WHERE idRooms = ?)";
+    private final static String  UPDATE = "UPDATE Rooms SET isAvailable = ?, floor = ?, MedicId = ?, DoctorOfficeId = ? WHERE idRooms = ?";
     private final static String DELETE = "DELETE FROM Rooms where idRooms = ?";
     private final static String GET_ALL = "SELECT idRooms, isAvailable, floor, MedicId, DoctorOfficeId FROM Rooms";
     private final static String GET_ONE = "SELECT idRooms, isAvailable, floor, MedicId, DoctorOfficeId FROM Rooms WHERE idRooms = ?";

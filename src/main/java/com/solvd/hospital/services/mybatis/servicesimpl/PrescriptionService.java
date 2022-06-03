@@ -1,6 +1,6 @@
 package com.solvd.hospital.services.mybatis.servicesimpl;
 
-import com.solvd.hospital.domain.Prescription;
+import com.solvd.hospital.bin.Prescription;
 import com.solvd.hospital.DAO.DAOException;
 import com.solvd.hospital.DAO.IPrescriptionDAO;
 import com.solvd.hospital.services.mybatis.IPrescriptionServices;

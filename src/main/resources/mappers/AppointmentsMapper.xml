@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.hospital.DAO.IAppointmentsDAO">
-    <resultMap type="com.solvd.hospital.domain.Appointments" id="AppointmentsResultMap" autoMapping="false">
+    <resultMap type="com.solvd.hospital.bin.Appointments" id="AppointmentsResultMap" autoMapping="false">
         <id column="idAppointments" property="appointmentID" />
         <result column="medicId" property="medicId" />
         <result column="appointmentRoomID" property="appointmentRoomID" />

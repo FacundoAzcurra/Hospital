@@ -1,7 +1,7 @@
 package com.solvd.hospital.services.jaxb;
 
 
-import com.solvd.hospital.domain.Rooms;
+import com.solvd.hospital.bin.Rooms;
 
 
 import javax.xml.bind.JAXBContext;

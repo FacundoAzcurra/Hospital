@@ -12,5 +12,5 @@ public interface DAO<T,K> {
 
     List<T> getList() throws DAOException, ConnectException;
 
-    T getObject(K id) throws DAOException, ConnectException;
+    T getObject(Integer id) throws DAOException, ConnectException;
 }

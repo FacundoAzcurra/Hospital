@@ -1,4 +1,4 @@
-package com.solvd.hospital.domain;
+package com.solvd.hospital.bin;
 
 public class Nurses {
     int nursesId;

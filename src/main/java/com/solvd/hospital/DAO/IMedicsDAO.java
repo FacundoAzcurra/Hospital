@@ -1,7 +1,6 @@
 package com.solvd.hospital.DAO;
 
-import com.solvd.hospital.DAO.DAO;
-import com.solvd.hospital.domain.Medics;
+import com.solvd.hospital.bin.Medics;
 
 public interface IMedicsDAO extends DAO<Medics, Integer> {
 }

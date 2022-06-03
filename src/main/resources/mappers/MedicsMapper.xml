@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.hospital.DAO.IMedicsDAO">
-    <resultMap id="MedicsResultMap" type="com.solvd.hospital.domain.Medics" autoMapping="false">
+    <resultMap id="MedicsResultMap" type="com.solvd.hospital.bin.Medics" autoMapping="false">
         <id column="idMedics" property="idMedics" />
         <result column="firstName" property="firstName" />
         <result column="lastName" property="lastName" />
