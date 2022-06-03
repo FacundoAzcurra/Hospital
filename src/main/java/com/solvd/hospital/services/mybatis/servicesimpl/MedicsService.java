@@ -1,9 +1,10 @@
 package com.solvd.hospital.services.mybatis.servicesimpl;
 
-import com.solvd.hospital.domain.Rooms;
+
+import com.solvd.hospital.domain.Medics;
 import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.DAO.IRoomsDAO;
-import com.solvd.hospital.services.mybatis.RoomsService;
+import com.solvd.hospital.DAO.IMedicsDAO;
+import com.solvd.hospital.services.mybatis.IMedicsService;
 import com.solvd.hospital.util.Constants;
 import com.solvd.hospital.util.DBPropertiesUtil;
 import org.apache.ibatis.io.Resources;
@@ -15,87 +16,97 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
-public class IRoomsService implements RoomsService {
-    private final static Logger LOGGER = LogManager.getLogger(IRoomsService.class);
+
+public class MedicsService implements IMedicsService {
+    private final static Logger LOGGER = LogManager.getLogger(MedicsService.class);
     private final static String MYBATIS_CONFIG = DBPropertiesUtil.getString(Constants.MYBATIS_CONFIG);
+
+
     @Override
-    public Rooms getRooms(int idRooms) {
-        IRoomsDAO roomsDAO;
+    public List<Medics> getMedics() {
+        IMedicsDAO medicsDAO;
+        List<Medics> medicsList;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            roomsDAO = sqlSessionFactory.openSession().getMapper(IRoomsDAO.class);
-            roomsDAO.getList();
+            medicsDAO = sqlSessionFactory.openSession().getMapper(IMedicsDAO.class);
+            medicsList = new ArrayList<>();
+            medicsList = medicsDAO.getList();
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select all' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
-        return null;
+        return medicsList;
     }
 
     @Override
-    public void saveRooms(Rooms rooms) {
-        IRoomsDAO roomsDAO;
+    public void saveMedic(Medics medics) {
+        IMedicsDAO medicsDAO;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession session = sqlSessionFactory.openSession();
-            roomsDAO = session.getMapper(IRoomsDAO.class);
-            roomsDAO.insert(rooms);
+            medicsDAO = session.getMapper(IMedicsDAO.class);
+            medicsDAO.insert(medics);
             session.commit();
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'insert' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
+
     }
 
-    public void deleteRoom(Rooms idRooms) {
-        IRoomsDAO roomsDAO;
-        try{
+    @Override
+    public void updateMedicById(int idMedics, Medics newMedic) {
+        IMedicsDAO medicsDAO;
+        try {
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession session = sqlSessionFactory.openSession();
-            roomsDAO = session.getMapper(IRoomsDAO.class);
-            roomsDAO.delete(idRooms);
+            medicsDAO = session.getMapper(IMedicsDAO.class);
+            newMedic.setidMedics(idMedics);
+            medicsDAO.update(newMedic);
             session.commit();
-
-        } catch (IOException  | DAOException e) {
-            LOGGER.info("Can´t solve 'delete' statement with myBatis" + e);
-            throw new RuntimeException();
-    }
-
-    }
-
-    @Override
-    public void updateRoomById(int idRooms, Rooms newRoom) {
-            IRoomsDAO roomsDAO;
-            try {
-                Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-                SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-                SqlSession session = sqlSessionFactory.openSession();
-                roomsDAO = session.getMapper(IRoomsDAO.class);
-                roomsDAO.update(newRoom);
-                session.commit();
-            } catch (IOException | DAOException e) {
-                LOGGER.info("Can't solve 'update' statement with myBatis " + e);
-                throw new RuntimeException(e);
-            }
+        } catch (IOException | DAOException e) {
+            LOGGER.info("Can't solve 'update' statement with myBatis " + e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public Rooms getRoomsById(int idRooms) {
-        IRoomsDAO roomsDAO;
+    public Medics getMedicById(int idMedics) {
+        IMedicsDAO medicsDAO;
+        Medics m;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            roomsDAO = sqlSessionFactory.openSession().getMapper(IRoomsDAO.class);
-            roomsDAO.getObject(idRooms);
+            medicsDAO = sqlSessionFactory.openSession().getMapper(IMedicsDAO.class);
+            m = medicsDAO.getObject(idMedics);
 
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
-        return null;
+        return m;
+    }
+
+    @Override
+    public void deleteMedic(int idMedics) {
+        IMedicsDAO medicsDAO;
+        try{
+            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
+            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+            SqlSession session = sqlSessionFactory.openSession();
+            medicsDAO = session.getMapper(IMedicsDAO.class);
+            medicsDAO.delete(idMedics);
+            session.commit();
+
+        } catch (IOException  | DAOException e) {
+            LOGGER.info("Can´t solve 'delete' statement with myBatis" + e);
+            throw new RuntimeException();
+        }
     }
 }

@@ -76,11 +76,11 @@ public class NursesDAO implements INursesDAO {
     }
 
     @Override
-    public void delete(Nurses a) throws DAOException {
+    public void delete(int a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(DELETE);
-            stat.setInt(1,a.getNursesId());
+            stat.setInt(1,a);
 
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");

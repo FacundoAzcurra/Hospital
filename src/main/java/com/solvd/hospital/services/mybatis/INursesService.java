@@ -1,9 +1,12 @@
 package com.solvd.hospital.services.mybatis;
 
+import com.solvd.hospital.domain.Appointments;
 import com.solvd.hospital.domain.Nurses;
 
-public interface NursesService {
-    Nurses getNurses(int nursesId);
+import java.util.List;
+
+public interface INursesService {
+    List<Nurses> getNurses();
 
     void saveNurse(Nurses nurses);
 
@@ -11,5 +14,5 @@ public interface NursesService {
 
     Nurses getNurseById(int nursesId);
 
-    void deleteNurse(Nurses nursesId);
+    void deleteNurse(int nursesId);
 }

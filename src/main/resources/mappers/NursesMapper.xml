@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.hospital.DAO.INursesDAO">
+    <resultMap id="NursesResultMap" type="com.solvd.hospital.domain.Nurses" autoMapping="false">
+        <result column="idNurses" property="nursesId" />
+        <result column="lastName" property="lastName" />
+        <result column="firstName" property="firstName" />
+        <result column="chirophaneRoomId" property="chirophaneRoomId" />
+    </resultMap>
+    <select id="getObject" parameterType="int" resultMap="NursesResultMap">
+        <![CDATA[
+        Select * from Nurses where idNurses = ${nursesId}
+         ;]]>
+    </select>
+
+    <select id="getList" resultMap="NursesResultMap">
+        <![CDATA[
+        Select * from Nurses
+        ;]]>
+    </select>
+    <delete id="delete">
+        <![CDATA[
+        Delete from Nurses where idNurses = ${nursesId}
+        ;]]>
+
+    </delete>
+    <insert id="insert">
+        <![CDATA[
+        Insert into Nurses (idNurses,lastName,firstName,chirophaneRoomId)
+        Values (${nursesId},"${lastName}","${firstName}",${chirophaneRoomId})
+        ;]]>
+
+    </insert>
+    <update id="update">
+        <![CDATA[
+        Update Nurses set
+        lastName = "${lastName}",
+        firstName = "${firstName}",
+        chirophaneRoomId = ${chirophaneRoomId}
+        where idNurses = ${nursesId}
+        ;]]>
+    </update>
+</mapper>

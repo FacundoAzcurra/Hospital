@@ -3,14 +3,16 @@ package com.solvd.hospital.services.mybatis;
 import com.solvd.hospital.domain.Appointments;
 import com.solvd.hospital.domain.Rooms;
 
-public interface AppointmentsService {
-    Appointments getAppointments(int appointmentID);
+import java.util.List;
+
+public interface IAppointmentsService {
+    List<Appointments> getAppointments();
 
     void saveAppointments(Appointments appointments);
 
     void updateAppointmentById(int appointmentID, Appointments newAppointment);
 
-    Rooms getAppointmentById(int appointmentID);
+    Appointments getAppointmentById(int appointmentID);
 
-    void deleteAppointment(Appointments appointmentID);
+    void deleteAppointment(int appointmentID);
 }

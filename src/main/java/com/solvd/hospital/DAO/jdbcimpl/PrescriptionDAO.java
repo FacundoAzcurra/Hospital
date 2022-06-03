@@ -75,11 +75,11 @@ public class PrescriptionDAO implements IPrescriptionDAO {
     }
 
     @Override
-    public void delete(Prescription a) throws DAOException {
+    public void delete(int a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(DELETE);
-            stat.setInt(1,a.getPrescriptionID());
+            stat.setInt(1,a);
 
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");

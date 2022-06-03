@@ -2,33 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.hospital.DAO.IPrescriptionDAO">
     <resultMap id="PrescriptionResultMap" type="com.solvd.hospital.domain.Prescription" autoMapping="false">
-        <result column="ID" property="prescriptionID" />
+        <id column="idPrescription" property="prescriptionID" />
         <result column="prescriptionPrice" property="prescriptionPrice" />
         <result column="medicId" property="medicId" />
         <result column="patientId" property="patientId" />
     </resultMap>
-    <select id="getById" parameterType="int" resultMap="PrescriptionResultMap">
-        Select * from Prescription where ID =#{id}
+    <select id="getObject" parameterType="int" resultMap="PrescriptionResultMap">
+        <![CDATA[
+        Select * from Prescription where idPrescription = ${prescriptionID};
+        ;]]>
     </select>
 
-    <select id="getAll" resultMap="PrescriptionResultMap">
+    <select id="getList" resultMap="PrescriptionResultMap">
+        <![CDATA[
         Select * from Prescription
+        ;]]>
     </select>
     <delete id="delete">
-        Delete from Prescription where ID = #{id}
+        <![CDATA[
+        Delete from Prescription where idPrescription = ${prescriptionID};
+        ;]]>
 
     </delete>
-    <insert id="save">
-        Insert into Prescription (prescriptionID,prescriptionPrice,medicId,patientId)
-        Values (#{prescriptionID},#{prescriptionPrice},#{medicId},#{patientId})
+    <insert id="insert">
+        <![CDATA[
+        Insert into Prescription (idPrescription,prescriptionPrice,medicId,patientId)
+        Values (${prescriptionID},${prescriptionPrice},${medicId},${patientId})
+        ;]]>
 
     </insert>
     <update id="update">
+        <![CDATA[
         Update Prescription set
-        prescriptionID = #{prescriptionID},
-        prescriptionPrice = #{prescriptionPrice},
-        medicId = #{medicId},
-        patientId = #{patientId}
-        where ID = #{id}
+        prescriptionPrice = ${prescriptionPrice},
+        medicId = ${medicId},
+        patientId = ${patientId}
+        where idPrescription = ${prescriptionID};
+        ;]]>
     </update>
 </mapper>

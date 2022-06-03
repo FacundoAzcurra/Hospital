@@ -1,9 +1,9 @@
 package com.solvd.hospital.services.mybatis.servicesimpl;
 
-import com.solvd.hospital.domain.Nurses;
+import com.solvd.hospital.domain.Prescription;
 import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.DAO.INursesDAO;
-import com.solvd.hospital.services.mybatis.NursesService;
+import com.solvd.hospital.DAO.IPrescriptionDAO;
+import com.solvd.hospital.services.mybatis.IPrescriptionServices;
 import com.solvd.hospital.util.Constants;
 import com.solvd.hospital.util.DBPropertiesUtil;
 import org.apache.ibatis.io.Resources;
@@ -15,35 +15,39 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
-public class INursesService implements NursesService {
-    private final static Logger LOGGER = LogManager.getLogger(INursesService.class);
+public class PrescriptionService implements IPrescriptionServices {
+    private final static Logger LOGGER = LogManager.getLogger(PrescriptionService.class);
     private final static String MYBATIS_CONFIG = DBPropertiesUtil.getString(Constants.MYBATIS_CONFIG);
 
     @Override
-    public Nurses getNurses(int nursesId) {
-        INursesDAO nursesDAO;
+    public List<Prescription> getPrescription() {
+        IPrescriptionDAO prescriptionDAO;
+        List<Prescription> prescriptionList;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            nursesDAO = sqlSessionFactory.openSession().getMapper(INursesDAO.class);
-            nursesDAO.getList();
+            prescriptionDAO = sqlSessionFactory.openSession().getMapper(IPrescriptionDAO.class);
+            prescriptionList = new ArrayList<>();
+            prescriptionList = prescriptionDAO.getList();
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select all' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
-        return null;
+        return prescriptionList;
     }
 
     @Override
-    public void saveNurse(Nurses nurses) {
-        INursesDAO nursesDAO;
+    public void savePrescription(Prescription prescription) {
+        IPrescriptionDAO prescriptionDAO;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession session = sqlSessionFactory.openSession();
-            nursesDAO = session.getMapper(INursesDAO.class);
-            nursesDAO.insert(nurses);
+            prescriptionDAO = session.getMapper(IPrescriptionDAO.class);
+            prescriptionDAO.insert(prescription);
             session.commit();
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'insert' statement with myBatis" + e);
@@ -53,14 +57,15 @@ public class INursesService implements NursesService {
     }
 
     @Override
-    public void updateNurseById(int idNurses, Nurses newNurse) {
-        INursesDAO nursesDAO;
+    public void updatePrescriptionById(int idPrescriptions, Prescription newPrescription) {
+        IPrescriptionDAO prescriptionDAO;
         try {
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession session = sqlSessionFactory.openSession();
-            nursesDAO = session.getMapper(INursesDAO.class);
-            nursesDAO.update(newNurse);
+            prescriptionDAO = session.getMapper(IPrescriptionDAO.class);
+            newPrescription.setPrescriptionID(idPrescriptions);
+            prescriptionDAO.update(newPrescription);
             session.commit();
         } catch (IOException | DAOException e) {
             LOGGER.info("Can't solve 'update' statement with myBatis " + e);
@@ -69,29 +74,31 @@ public class INursesService implements NursesService {
     }
 
     @Override
-    public Nurses getNurseById(int nursesId) {
-        INursesDAO nursesDAO;
+    public Prescription getPrescriptionById(int prescriptionID) {
+        IPrescriptionDAO prescriptionDAO;
+        Prescription p;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            nursesDAO = sqlSessionFactory.openSession().getMapper(INursesDAO.class);
-            nursesDAO.getObject(nursesId);
+            prescriptionDAO = sqlSessionFactory.openSession().getMapper(IPrescriptionDAO.class);
+            p = prescriptionDAO.getObject(prescriptionID);
 
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
-        return null;    }
+        return p;
+    }
 
     @Override
-    public void deleteNurse(Nurses nursesId) {
-        INursesDAO nursesDAO;
+    public void deletePrescription(int prescriptionID) {
+        IPrescriptionDAO prescriptionDAO;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession session = sqlSessionFactory.openSession();
-            nursesDAO = session.getMapper(INursesDAO.class);
-            nursesDAO.delete(nursesId);
+            prescriptionDAO = session.getMapper(IPrescriptionDAO.class);
+            prescriptionDAO.delete(prescriptionID);
             session.commit();
 
         } catch (IOException  | DAOException e) {
@@ -99,6 +106,4 @@ public class INursesService implements NursesService {
             throw new RuntimeException();
         }
     }
-    }
-
-
+}

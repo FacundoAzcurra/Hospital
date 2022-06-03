@@ -24,7 +24,7 @@ public class MySessionFactory {
             reader.close();
 
         }catch (IOException e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.error(e);
         }
     }
 

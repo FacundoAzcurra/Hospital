@@ -1,10 +1,10 @@
 package com.solvd.hospital.services.mybatis.servicesimpl;
 
-
-import com.solvd.hospital.domain.Medics;
+import com.solvd.hospital.domain.Appointments;
+import com.solvd.hospital.domain.Nurses;
 import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.DAO.IMedicsDAO;
-import com.solvd.hospital.services.mybatis.MedicsService;
+import com.solvd.hospital.DAO.INursesDAO;
+import com.solvd.hospital.services.mybatis.INursesService;
 import com.solvd.hospital.util.Constants;
 import com.solvd.hospital.util.DBPropertiesUtil;
 import org.apache.ibatis.io.Resources;
@@ -16,37 +16,39 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
-
-public class IMedicsService implements MedicsService {
-    private final static Logger LOGGER = LogManager.getLogger(IMedicsService.class);
+public class NursesService implements INursesService {
+    private final static Logger LOGGER = LogManager.getLogger(NursesService.class);
     private final static String MYBATIS_CONFIG = DBPropertiesUtil.getString(Constants.MYBATIS_CONFIG);
 
-
     @Override
-    public Medics getMedics(int idMedics) {
-        IMedicsDAO medicsDAO;
+    public List<Nurses> getNurses() {
+        INursesDAO nursesDAO;
+        List<Nurses> nursesList;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            medicsDAO = sqlSessionFactory.openSession().getMapper(IMedicsDAO.class);
-            medicsDAO.getList();
+            nursesDAO = sqlSessionFactory.openSession().getMapper(INursesDAO.class);
+            nursesList = new ArrayList<>();
+            nursesList = nursesDAO.getList();
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select all' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
-        return null;
+        return nursesList;
     }
 
     @Override
-    public void saveMedic(Medics medics) {
-        IMedicsDAO medicsDAO;
+    public void saveNurse(Nurses nurses) {
+        INursesDAO nursesDAO;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession session = sqlSessionFactory.openSession();
-            medicsDAO = session.getMapper(IMedicsDAO.class);
-            medicsDAO.insert(medics);
+            nursesDAO = session.getMapper(INursesDAO.class);
+            nursesDAO.insert(nurses);
             session.commit();
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'insert' statement with myBatis" + e);
@@ -56,14 +58,15 @@ public class IMedicsService implements MedicsService {
     }
 
     @Override
-    public void updateMedicById(int idMedics, Medics newMedic) {
-        IMedicsDAO medicsDAO;
+    public void updateNurseById(int idNurses, Nurses newNurse) {
+        INursesDAO nursesDAO;
         try {
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession session = sqlSessionFactory.openSession();
-            medicsDAO = session.getMapper(IMedicsDAO.class);
-            medicsDAO.update(newMedic);
+            nursesDAO = session.getMapper(INursesDAO.class);
+            newNurse.setNursesId(idNurses);
+            nursesDAO.update(newNurse);
             session.commit();
         } catch (IOException | DAOException e) {
             LOGGER.info("Can't solve 'update' statement with myBatis " + e);
@@ -72,30 +75,31 @@ public class IMedicsService implements MedicsService {
     }
 
     @Override
-    public Medics getMedicById(int idMedics) {
-        IMedicsDAO medicsDAO;
+    public Nurses getNurseById(int nursesId) {
+        INursesDAO nursesDAO;
+        Nurses n;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            medicsDAO = sqlSessionFactory.openSession().getMapper(IMedicsDAO.class);
-            medicsDAO.getObject(idMedics);
+            nursesDAO = sqlSessionFactory.openSession().getMapper(INursesDAO.class);
+            n = nursesDAO.getObject(nursesId);
 
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
-        return null;
+        return n;
     }
 
     @Override
-    public void deleteMedic(Medics idMedics) {
-        IMedicsDAO medicsDAO;
+    public void deleteNurse(int nursesId) {
+        INursesDAO nursesDAO;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession session = sqlSessionFactory.openSession();
-            medicsDAO = session.getMapper(IMedicsDAO.class);
-            medicsDAO.delete(idMedics);
+            nursesDAO = session.getMapper(INursesDAO.class);
+            nursesDAO.delete(nursesId);
             session.commit();
 
         } catch (IOException  | DAOException e) {
@@ -103,4 +107,6 @@ public class IMedicsService implements MedicsService {
             throw new RuntimeException();
         }
     }
-}
+    }
+
+

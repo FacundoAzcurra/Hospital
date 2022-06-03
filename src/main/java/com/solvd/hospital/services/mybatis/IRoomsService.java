@@ -1,11 +1,12 @@
 package com.solvd.hospital.services.mybatis;
 
+import com.solvd.hospital.domain.Appointments;
 import com.solvd.hospital.domain.Rooms;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-public interface RoomsService {
-    Rooms getRooms(int idRooms);
+import java.util.List;
+
+public interface IRoomsService {
+    List<Rooms> getRooms();
 
     void saveRooms(Rooms rooms);
 
@@ -13,5 +14,5 @@ public interface RoomsService {
 
     Rooms getRoomsById(int idRooms);
 
-    void deleteRoom(Rooms idRooms);
+    void deleteRoom(int idRooms);
 }

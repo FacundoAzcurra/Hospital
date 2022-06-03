@@ -6,5 +6,5 @@ public interface Constants {
     String USER = "db.user";
     String PASS = "db.pass";
     String DRIVER = "db.driver";
-    String MYBATIS_CONFIG = "mappers/mybatisConfig.xml";
+    String MYBATIS_CONFIG = "db.mybatisConfig";
 }

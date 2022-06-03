@@ -1,9 +1,12 @@
 package com.solvd.hospital.services.mybatis;
 
+import com.solvd.hospital.domain.Appointments;
 import com.solvd.hospital.domain.Prescription;
 
-public interface PrescriptionServices {
-    Prescription getPrescription(int PrescriptionID);
+import java.util.List;
+
+public interface IPrescriptionServices {
+    List<Prescription> getPrescription();
 
     void savePrescription(Prescription Prescription);
 
@@ -11,5 +14,5 @@ public interface PrescriptionServices {
 
     Prescription getPrescriptionById(int PrescriptionID);
 
-    void deletePrescription(Prescription PrescriptionID);
+    void deletePrescription(int PrescriptionID);
 }

@@ -78,11 +78,11 @@ public class RoomsDAO implements IRoomsDAO {
     }
 
     @Override
-    public void delete(Rooms a) throws DAOException {
+    public void delete(int a) throws DAOException {
         PreparedStatement stat = null;
         try{
             stat = conn.prepareStatement(DELETE);
-            stat.setInt(1,a.getidRooms());
+            stat.setInt(1,a);
 
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");

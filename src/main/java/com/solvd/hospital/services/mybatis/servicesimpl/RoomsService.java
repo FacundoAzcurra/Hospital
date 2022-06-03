@@ -1,10 +1,9 @@
 package com.solvd.hospital.services.mybatis.servicesimpl;
 
-import com.solvd.hospital.domain.Appointments;
 import com.solvd.hospital.domain.Rooms;
 import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.DAO.IAppointmentsDAO;
-import com.solvd.hospital.services.mybatis.AppointmentsService;
+import com.solvd.hospital.DAO.IRoomsDAO;
+import com.solvd.hospital.services.mybatis.IRoomsService;
 import com.solvd.hospital.util.Constants;
 import com.solvd.hospital.util.DBPropertiesUtil;
 import org.apache.ibatis.io.Resources;
@@ -16,35 +15,38 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
-public class IAppointmentsService implements AppointmentsService {
-    private final static Logger LOGGER = LogManager.getLogger(IAppointmentsService.class);
+public class RoomsService implements IRoomsService {
+    private final static Logger LOGGER = LogManager.getLogger(RoomsService.class);
     private final static String MYBATIS_CONFIG = DBPropertiesUtil.getString(Constants.MYBATIS_CONFIG);
-
     @Override
-    public Appointments getAppointments(int appointmentID) {
-        IAppointmentsDAO appointmentsDAO;
+    public List<Rooms> getRooms() {
+        IRoomsDAO roomsDAO;
+        List<Rooms> roomsList;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            appointmentsDAO = sqlSessionFactory.openSession().getMapper(IAppointmentsDAO.class);
-            appointmentsDAO.getList();
+            roomsDAO = sqlSessionFactory.openSession().getMapper(IRoomsDAO.class);
+            roomsList = new ArrayList<>();
+            roomsList = roomsDAO.getList();
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select all' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
-        return null;
+        return roomsList;
     }
 
     @Override
-    public void saveAppointments(Appointments appointments) {
-        IAppointmentsDAO appointmentsDAO;
+    public void saveRooms(Rooms rooms) {
+        IRoomsDAO roomsDAO;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession session = sqlSessionFactory.openSession();
-            appointmentsDAO = session.getMapper(IAppointmentsDAO.class);
-            appointmentsDAO.insert(appointments);
+            roomsDAO = session.getMapper(IRoomsDAO.class);
+            roomsDAO.insert(rooms);
             session.commit();
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'insert' statement with myBatis" + e);
@@ -52,53 +54,53 @@ public class IAppointmentsService implements AppointmentsService {
         }
     }
 
-    @Override
-    public void updateAppointmentById(int appointmentID, Appointments newAppointment) {
-        IAppointmentsDAO appointmentsDAO;
+    public void deleteRoom(int idRooms) {
+        IRoomsDAO roomsDAO;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             SqlSession session = sqlSessionFactory.openSession();
-            appointmentsDAO = session.getMapper(IAppointmentsDAO.class);
-            appointmentsDAO.update(newAppointment);
+            roomsDAO = session.getMapper(IRoomsDAO.class);
+            roomsDAO.delete(idRooms);
             session.commit();
-        } catch (IOException  | DAOException e) {
-            LOGGER.info("Can´t solve 'update' statement with myBatis" + e);
-            throw new RuntimeException();
-        }
 
+        } catch (IOException  | DAOException e) {
+            LOGGER.info("Can´t solve 'delete' statement with myBatis" + e);
+            throw new RuntimeException();
+    }
     }
 
     @Override
-    public Rooms getAppointmentById(int appointmentID) {
-        IAppointmentsDAO appointmentsDAO;
+    public void updateRoomById(int idRooms, Rooms newRoom) {
+            IRoomsDAO roomsDAO;
+            try {
+                Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
+                SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+                SqlSession session = sqlSessionFactory.openSession();
+                roomsDAO = session.getMapper(IRoomsDAO.class);
+                newRoom.setidRooms(idRooms);
+                roomsDAO.update(newRoom);
+                session.commit();
+            } catch (IOException | DAOException e) {
+                LOGGER.info("Can't solve 'update' statement with myBatis " + e);
+                throw new RuntimeException(e);
+            }
+    }
+
+    @Override
+    public Rooms getRoomsById(int idRooms) {
+        IRoomsDAO roomsDAO;
+        Rooms r;
         try{
             Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            appointmentsDAO = sqlSessionFactory.openSession().getMapper(IAppointmentsDAO.class);
-            appointmentsDAO.getObject(appointmentID);
+            roomsDAO = sqlSessionFactory.openSession().getMapper(IRoomsDAO.class);
+            r = roomsDAO.getObject(idRooms);
 
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
-        return null;
+        return r;
     }
-
-    @Override
-    public void deleteAppointment(Appointments appointmentID) {
-        IAppointmentsDAO appointmentsDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
-            appointmentsDAO = session.getMapper(IAppointmentsDAO.class);
-            appointmentsDAO.delete(appointmentID);
-            session.commit();
-        } catch (IOException  | DAOException e) {
-            LOGGER.info("Can´t solve 'delete' statement with myBatis" + e);
-            throw new RuntimeException();
-
-    }
-}
 }

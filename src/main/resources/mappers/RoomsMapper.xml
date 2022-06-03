@@ -2,33 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.hospital.DAO.IRoomsDAO">
     <resultMap id="RoomsResultMap" type="com.solvd.hospital.domain.Rooms" autoMapping="false">
-        <result column="ID" property="idRooms" />
+        <id column="idRooms" property="idRooms" />
         <result column="isAvailable" property="isAvailable" />
         <result column="floor" property="floor" />
         <result column="doctorOfficeId" property="doctorOfficeId" />
     </resultMap>
-    <select id="getById" parameterType="int" resultMap="RoomsResultMap">
-        Select * from Rooms where ID =#{id}
+    <select id="getObject" parameterType="int" resultMap="RoomsResultMap">
+        <![CDATA[
+         Select * from Rooms where idRooms = ${idRooms};
+         ]]>
     </select>
 
-    <select id="getAll" resultMap="PrescriptionResultMap">
+    <select id="getList" resultMap="RoomsResultMap">
+        <![CDATA[
         Select * from Rooms
+        ]]>
     </select>
     <delete id="delete">
-        Delete from Rooms where ID = #{id}
+        <![CDATA[
+        Delete from Rooms where idRooms = ${idRooms};
+        ]]>
 
     </delete>
-    <insert id="save">
+    <insert id="insert">
+        <![CDATA[
         Insert into Rooms (idRooms,isAvailable,floor,doctorOfficeId)
-        Values (#{idRooms},#{isAvailable},#{floor},#{doctorOfficeId})
+        Values (${idRooms},${isAvailable},${floor},${doctorOfficeId})
+        ]]>
 
     </insert>
     <update id="update">
+        <![CDATA[
         Update Rooms set
-        idRooms = #{idRooms},
-        isAvailable = #{isAvailable},
-        floor = #{floor},
-        doctorOfficeId = #{doctorOfficeId}
-        where ID = #{id}
+        isAvailable = ${isAvailable},
+        floor = ${floor},
+        doctorOfficeId = ${doctorOfficeId}
+        where idRooms = ${idRooms};
+        ]]>
     </update>
 </mapper>

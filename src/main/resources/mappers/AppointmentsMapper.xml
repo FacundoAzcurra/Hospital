@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.hospital.DAO.IAppointmentsDAO">
+    <resultMap type="com.solvd.hospital.domain.Appointments" id="AppointmentsResultMap" autoMapping="false">
+        <id column="idAppointments" property="appointmentID" />
+        <result column="medicId" property="medicId" />
+        <result column="appointmentRoomID" property="appointmentRoomID" />
+        <result column="patientId" property="patientId" />
+    </resultMap>
+    <select id="getObject" parameterType="int" resultMap="AppointmentsResultMap">
+        <![CDATA[
+        Select * from Appointments where idAppointments = ${appointmentID}
+        ;]]>
+    </select>
+
+    <select id="getList" resultMap="AppointmentsResultMap">
+        <![CDATA[
+        Select * from Appointments
+        ;]]>
+    </select>
+    <delete id="delete">
+        <![CDATA[
+        Delete from Appointments where idAppointments = ${appointmentID}
+        ;]]>
+    </delete>
+    <insert id="insert">
+        <![CDATA[
+        Insert into Appointments (idAppointments,medicId,appointmentRoomID,patientId)
+        Values (${appointmentID},${medicId},${appointmentRoomID},${patientId})
+        ;]]>
+
+    </insert>
+    <update id="update">
+        <![CDATA[
+        Update Appointments set
+        medicId = ${medicId},
+        appointmentRoomID = ${appointmentRoomID},
+        patientId = ${patientId}
+        where idAppointments = ${appointmentID}
+        ;]]>
+    </update>
+</mapper>
