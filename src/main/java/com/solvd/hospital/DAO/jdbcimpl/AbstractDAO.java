@@ -7,12 +7,12 @@ import java.sql.Connection;
 
 public  class AbstractDAO {
 
-    public Connection getConnection() throws ConnectException {
+    public synchronized Connection getConnection() throws ConnectException {
         return ConnectionPool.getInstance().getConnection();
     }
 
 
-    public void returnConnection(Connection connection){
+    public synchronized void returnConnection(Connection connection){
         ConnectionPool.getInstance().returnConnection(connection);
     }
 
