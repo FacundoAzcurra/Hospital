@@ -5,7 +5,7 @@ import com.solvd.hospital.util.ConnectionPool;
 import java.net.ConnectException;
 import java.sql.Connection;
 
-public  class AbstractDAO {
+public abstract class AbstractDAO {
 
     public synchronized Connection getConnection() throws ConnectException {
         return ConnectionPool.getInstance().getConnection();

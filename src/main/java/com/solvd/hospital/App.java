@@ -536,11 +536,6 @@ public class App {
             default:
                 LOG.info("Not valid option!");
                 break;
-
         }
 }
 }
-
-
-
-
