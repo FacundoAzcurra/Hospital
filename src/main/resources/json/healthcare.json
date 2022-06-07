@@ -1,0 +1,13 @@
+[
+  {
+    "healthCareID" : 1,
+    "price": 300,
+    "category": "GOLD"
+  },
+
+  {
+    "healthCareID" : 2,
+    "price": 150,
+    "category": "SILVER"
+  }
+]

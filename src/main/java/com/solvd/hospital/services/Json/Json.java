@@ -24,7 +24,7 @@ public class Json {
         patients.add(patient4);
 
         try{
-            File file = new File("src/main/resources/patients.json");
+            File file = new File("src/main/resources/json/patients.json");
             mapper.writeValue(file, patients);
         } catch (IOException e) {
             throw new RuntimeException(e);

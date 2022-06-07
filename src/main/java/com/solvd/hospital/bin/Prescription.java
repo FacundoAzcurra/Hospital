@@ -1,9 +1,19 @@
 package com.solvd.hospital.bin;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "prescriptions")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Prescription {
+    @XmlAttribute(name = "id")
     int prescriptionID;
+    @XmlAttribute(name = "prescriptionPrice")
     double prescriptionPrice;
+    @XmlAttribute(name = "medicId")
     int medicId;
+    @XmlAttribute(name = "patientId")
     int patientId;
 
     public Prescription() {

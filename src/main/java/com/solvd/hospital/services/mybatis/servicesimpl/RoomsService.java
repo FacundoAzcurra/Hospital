@@ -18,17 +18,15 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomsService implements IRoomsService {
+public class RoomsService extends AbstractService implements IRoomsService {
     private final static Logger LOGGER = LogManager.getLogger(RoomsService.class);
     private final static String MYBATIS_CONFIG = DBPropertiesUtil.getString(Constants.MYBATIS_CONFIG);
     @Override
     public List<Rooms> getRooms() {
         IRoomsDAO roomsDAO;
         List<Rooms> roomsList;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            roomsDAO = sqlSessionFactory.openSession().getMapper(IRoomsDAO.class);
+        try(SqlSession session = sqlSession()){
+            roomsDAO = session.getMapper(IRoomsDAO.class);
             roomsList = new ArrayList<>();
             roomsList = roomsDAO.getList();
         } catch (IOException | DAOException e ) {
@@ -41,10 +39,7 @@ public class RoomsService implements IRoomsService {
     @Override
     public void saveRooms(Rooms rooms) {
         IRoomsDAO roomsDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             roomsDAO = session.getMapper(IRoomsDAO.class);
             roomsDAO.insert(rooms);
             session.commit();
@@ -56,10 +51,7 @@ public class RoomsService implements IRoomsService {
 
     public void deleteRoom(int idRooms) {
         IRoomsDAO roomsDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             roomsDAO = session.getMapper(IRoomsDAO.class);
             roomsDAO.delete(idRooms);
             session.commit();
@@ -73,10 +65,7 @@ public class RoomsService implements IRoomsService {
     @Override
     public void updateRoomById(int idRooms, Rooms newRoom) {
             IRoomsDAO roomsDAO;
-            try {
-                Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-                SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-                SqlSession session = sqlSessionFactory.openSession();
+            try (SqlSession session = sqlSession()){
                 roomsDAO = session.getMapper(IRoomsDAO.class);
                 newRoom.setidRooms(idRooms);
                 roomsDAO.update(newRoom);
@@ -91,10 +80,8 @@ public class RoomsService implements IRoomsService {
     public Rooms getRoomsById(int idRooms) {
         IRoomsDAO roomsDAO;
         Rooms r;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            roomsDAO = sqlSessionFactory.openSession().getMapper(IRoomsDAO.class);
+        try(SqlSession session = sqlSession()){
+            roomsDAO = session.getMapper(IRoomsDAO.class);
             r = roomsDAO.getObject(idRooms);
 
         } catch (IOException | DAOException e ) {

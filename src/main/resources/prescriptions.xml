@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<prescriptions id = "1">
+
+    <id>1</id>
+
+    <prescriptionPrice>200</prescriptionPrice>
+
+    <medicId>1</medicId>
+
+    <patientId>1</patientId>
+
+</prescriptions>

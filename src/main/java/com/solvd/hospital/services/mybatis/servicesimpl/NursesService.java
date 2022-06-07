@@ -18,7 +18,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NursesService implements INursesService {
+public class NursesService extends AbstractService implements INursesService {
     private final static Logger LOGGER = LogManager.getLogger(NursesService.class);
     private final static String MYBATIS_CONFIG = DBPropertiesUtil.getString(Constants.MYBATIS_CONFIG);
 
@@ -26,10 +26,8 @@ public class NursesService implements INursesService {
     public List<Nurses> getNurses() {
         INursesDAO nursesDAO;
         List<Nurses> nursesList;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            nursesDAO = sqlSessionFactory.openSession().getMapper(INursesDAO.class);
+        try(SqlSession session = sqlSession()){
+            nursesDAO = session.getMapper(INursesDAO.class);
             nursesList = new ArrayList<>();
             nursesList = nursesDAO.getList();
         } catch (IOException | DAOException e ) {
@@ -42,10 +40,7 @@ public class NursesService implements INursesService {
     @Override
     public void saveNurse(Nurses nurses) {
         INursesDAO nursesDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             nursesDAO = session.getMapper(INursesDAO.class);
             nursesDAO.insert(nurses);
             session.commit();
@@ -59,10 +54,7 @@ public class NursesService implements INursesService {
     @Override
     public void updateNurseById(int idNurses, Nurses newNurse) {
         INursesDAO nursesDAO;
-        try {
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try (SqlSession session = sqlSession()){
             nursesDAO = session.getMapper(INursesDAO.class);
             newNurse.setNursesId(idNurses);
             nursesDAO.update(newNurse);
@@ -77,10 +69,8 @@ public class NursesService implements INursesService {
     public Nurses getNurseById(int nursesId) {
         INursesDAO nursesDAO;
         Nurses n;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            nursesDAO = sqlSessionFactory.openSession().getMapper(INursesDAO.class);
+        try(SqlSession session = sqlSession()){
+            nursesDAO = session.getMapper(INursesDAO.class);
             n = nursesDAO.getObject(nursesId);
 
         } catch (IOException | DAOException e ) {
@@ -93,10 +83,7 @@ public class NursesService implements INursesService {
     @Override
     public void deleteNurse(int nursesId) {
         INursesDAO nursesDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             nursesDAO = session.getMapper(INursesDAO.class);
             nursesDAO.delete(nursesId);
             session.commit();

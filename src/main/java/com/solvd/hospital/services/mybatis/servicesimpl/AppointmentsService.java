@@ -18,7 +18,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppointmentsService implements IAppointmentsService {
+public class AppointmentsService extends AbstractService implements IAppointmentsService {
     private final static Logger LOGGER = LogManager.getLogger(AppointmentsService.class);
     private final static String MYBATIS_CONFIG = DBPropertiesUtil.getString(Constants.MYBATIS_CONFIG);
 
@@ -26,27 +26,22 @@ public class AppointmentsService implements IAppointmentsService {
     public List<Appointments> getAppointments() {
         IAppointmentsDAO appointmentsDAO;
         List<Appointments> appointmentsList;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            appointmentsDAO = sqlSessionFactory.openSession().getMapper(IAppointmentsDAO.class);
+        try (SqlSession session = sqlSession()) {
+            appointmentsDAO = session.getMapper(IAppointmentsDAO.class);
             appointmentsList = new ArrayList<>();
             appointmentsList = appointmentsDAO.getList();
 
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select all' statement with myBatis" + e);
             throw new RuntimeException(e);
-        };
+        }
         return appointmentsList;
     }
 
     @Override
     public void saveAppointments(Appointments appointments) {
         IAppointmentsDAO appointmentsDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             appointmentsDAO = session.getMapper(IAppointmentsDAO.class);
             appointmentsDAO.insert(appointments);
             session.commit();
@@ -59,10 +54,7 @@ public class AppointmentsService implements IAppointmentsService {
     @Override
     public void updateAppointmentById(int appointmentID, Appointments newAppointment) {
         IAppointmentsDAO appointmentsDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             appointmentsDAO = session.getMapper(IAppointmentsDAO.class);
             newAppointment.setAppointmentID(appointmentID);
             appointmentsDAO.update(newAppointment);
@@ -78,13 +70,9 @@ public class AppointmentsService implements IAppointmentsService {
     public Appointments getAppointmentById(int appointmentID) {
         IAppointmentsDAO appointmentsDAO;
         Appointments a;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            appointmentsDAO = sqlSessionFactory.openSession().getMapper(IAppointmentsDAO.class);
+        try(SqlSession session = sqlSession()){
+            appointmentsDAO = session.getMapper(IAppointmentsDAO.class);
             a = appointmentsDAO.getObject(appointmentID);
-
-
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select' statement with myBatis" + e);
             throw new RuntimeException(e);
@@ -95,10 +83,7 @@ public class AppointmentsService implements IAppointmentsService {
     @Override
     public void deleteAppointment(int appointmentID) {
         IAppointmentsDAO appointmentsDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             appointmentsDAO = session.getMapper(IAppointmentsDAO.class);
             appointmentsDAO.delete(appointmentID);
             session.commit();

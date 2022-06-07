@@ -2,16 +2,17 @@ package com.solvd.hospital.services.mybatis;
 
 import com.solvd.hospital.bin.Nurses;
 
+import java.net.ConnectException;
 import java.util.List;
 
 public interface INursesService {
-    List<Nurses> getNurses();
+    List<Nurses> getNurses() throws ConnectException;
 
-    void saveNurse(Nurses nurses);
+    void saveNurse(Nurses nurses) throws ConnectException;
 
-    void updateNurseById(int idNurses, Nurses newNurse);
+    void updateNurseById(int idNurses, Nurses newNurse) throws ConnectException;
 
-    Nurses getNurseById(int nursesId);
+    Nurses getNurseById(int nursesId) throws ConnectException;
 
-    void deleteNurse(int nursesId);
+    void deleteNurse(int nursesId) throws ConnectException;
 }

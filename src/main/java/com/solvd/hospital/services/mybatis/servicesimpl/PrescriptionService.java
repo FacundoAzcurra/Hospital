@@ -18,7 +18,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrescriptionService implements IPrescriptionServices {
+public class PrescriptionService extends AbstractService implements IPrescriptionServices {
     private final static Logger LOGGER = LogManager.getLogger(PrescriptionService.class);
     private final static String MYBATIS_CONFIG = DBPropertiesUtil.getString(Constants.MYBATIS_CONFIG);
 
@@ -26,10 +26,8 @@ public class PrescriptionService implements IPrescriptionServices {
     public List<Prescription> getPrescription() {
         IPrescriptionDAO prescriptionDAO;
         List<Prescription> prescriptionList;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            prescriptionDAO = sqlSessionFactory.openSession().getMapper(IPrescriptionDAO.class);
+        try(SqlSession session = sqlSession()){
+            prescriptionDAO = session.getMapper(IPrescriptionDAO.class);
             prescriptionList = new ArrayList<>();
             prescriptionList = prescriptionDAO.getList();
         } catch (IOException | DAOException e ) {
@@ -42,10 +40,7 @@ public class PrescriptionService implements IPrescriptionServices {
     @Override
     public void savePrescription(Prescription prescription) {
         IPrescriptionDAO prescriptionDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             prescriptionDAO = session.getMapper(IPrescriptionDAO.class);
             prescriptionDAO.insert(prescription);
             session.commit();
@@ -59,10 +54,7 @@ public class PrescriptionService implements IPrescriptionServices {
     @Override
     public void updatePrescriptionById(int idPrescriptions, Prescription newPrescription) {
         IPrescriptionDAO prescriptionDAO;
-        try {
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             prescriptionDAO = session.getMapper(IPrescriptionDAO.class);
             newPrescription.setPrescriptionID(idPrescriptions);
             prescriptionDAO.update(newPrescription);
@@ -77,10 +69,8 @@ public class PrescriptionService implements IPrescriptionServices {
     public Prescription getPrescriptionById(int prescriptionID) {
         IPrescriptionDAO prescriptionDAO;
         Prescription p;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            prescriptionDAO = sqlSessionFactory.openSession().getMapper(IPrescriptionDAO.class);
+        try(SqlSession session = sqlSession()){
+            prescriptionDAO = session.getMapper(IPrescriptionDAO.class);
             p = prescriptionDAO.getObject(prescriptionID);
 
         } catch (IOException | DAOException e ) {
@@ -93,10 +83,7 @@ public class PrescriptionService implements IPrescriptionServices {
     @Override
     public void deletePrescription(int prescriptionID) {
         IPrescriptionDAO prescriptionDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             prescriptionDAO = session.getMapper(IPrescriptionDAO.class);
             prescriptionDAO.delete(prescriptionID);
             session.commit();

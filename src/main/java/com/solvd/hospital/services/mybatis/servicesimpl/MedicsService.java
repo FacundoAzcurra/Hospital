@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MedicsService implements IMedicsService {
+public class MedicsService extends AbstractService implements IMedicsService {
     private final static Logger LOGGER = LogManager.getLogger(MedicsService.class);
     private final static String MYBATIS_CONFIG = DBPropertiesUtil.getString(Constants.MYBATIS_CONFIG);
 
@@ -29,10 +29,8 @@ public class MedicsService implements IMedicsService {
     public List<Medics> getMedics() {
         IMedicsDAO medicsDAO;
         List<Medics> medicsList;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            medicsDAO = sqlSessionFactory.openSession().getMapper(IMedicsDAO.class);
+        try(SqlSession session = sqlSession()){
+            medicsDAO = session.getMapper(IMedicsDAO.class);
             medicsList = new ArrayList<>();
             medicsList = medicsDAO.getList();
         } catch (IOException | DAOException e ) {
@@ -45,10 +43,7 @@ public class MedicsService implements IMedicsService {
     @Override
     public void saveMedic(Medics medics) {
         IMedicsDAO medicsDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             medicsDAO = session.getMapper(IMedicsDAO.class);
             medicsDAO.insert(medics);
             session.commit();
@@ -62,10 +57,7 @@ public class MedicsService implements IMedicsService {
     @Override
     public void updateMedicById(int idMedics, Medics newMedic) {
         IMedicsDAO medicsDAO;
-        try {
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()) {
             medicsDAO = session.getMapper(IMedicsDAO.class);
             newMedic.setidMedics(idMedics);
             medicsDAO.update(newMedic);
@@ -80,10 +72,8 @@ public class MedicsService implements IMedicsService {
     public Medics getMedicById(int idMedics) {
         IMedicsDAO medicsDAO;
         Medics m;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            medicsDAO = sqlSessionFactory.openSession().getMapper(IMedicsDAO.class);
+        try(SqlSession session = sqlSession()){
+            medicsDAO = session.getMapper(IMedicsDAO.class);
             m = medicsDAO.getObject(idMedics);
 
         } catch (IOException | DAOException e ) {
@@ -96,10 +86,7 @@ public class MedicsService implements IMedicsService {
     @Override
     public void deleteMedic(int idMedics) {
         IMedicsDAO medicsDAO;
-        try{
-            Reader reader = Resources.getResourceAsReader(MYBATIS_CONFIG);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-            SqlSession session = sqlSessionFactory.openSession();
+        try(SqlSession session = sqlSession()){
             medicsDAO = session.getMapper(IMedicsDAO.class);
             medicsDAO.delete(idMedics);
             session.commit();

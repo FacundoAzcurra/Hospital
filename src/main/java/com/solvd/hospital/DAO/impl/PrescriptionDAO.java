@@ -1,8 +1,8 @@
-package com.solvd.hospital.DAO.jdbcimpl;
+package com.solvd.hospital.DAO.impl;
 
 import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.DAO.IRoomsDAO;
-import com.solvd.hospital.bin.Rooms;
+import com.solvd.hospital.DAO.IPrescriptionDAO;
+import com.solvd.hospital.bin.Prescription;
 
 import java.net.ConnectException;
 import java.sql.Connection;
@@ -12,28 +12,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomsDAO extends AbstractDAO implements IRoomsDAO {
+public class PrescriptionDAO extends AbstractDAO implements IPrescriptionDAO {
 
-    private final static String  INSERT = "INSERT INTO Rooms(idRooms, isAvailable, floor, MedicId, DoctorOfficeId) VALUES (?,?,?,?,?) ";
-    private final static String  UPDATE = "UPDATE Rooms SET isAvailable = ?, floor = ?, MedicId = ?, DoctorOfficeId = ? WHERE idRooms = ?";
-    private final static String DELETE = "DELETE FROM Rooms where idRooms = ?";
-    private final static String GET_ALL = "SELECT idRooms, isAvailable, floor, MedicId, DoctorOfficeId FROM Rooms";
-    private final static String GET_ONE = "SELECT idRooms, isAvailable, floor, MedicId, DoctorOfficeId FROM Rooms WHERE idRooms = ?";
+    private final static String  INSERT = "INSERT INTO Prescription(idPrescription, prescriptionPrice, medicId, patientId) VALUES (?,?,?,?) ";
+    private final static String  UPDATE = "UPDATE Prescription SET prescriptionPrice = ?, medicId = ?, patientId = ? WHERE idPrescription = ?";
+    private final static String DELETE = "DELETE FROM Prescription where idPrescription = ?";
+    private final static String GET_ALL = "SELECT idPrescription, prescriptionPrice, medicId, patientId FROM Prescription";
+    private final static String GET_ONE = "SELECT idPrescription, prescriptionPrice, medicId, patientId FROM Prescription WHERE idPrescription = ?";
 
 
     @Override
-    public void insert(Rooms a) throws DAOException, ConnectException {
+    public void insert(Prescription a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(INSERT);
-            stat.setInt(1,a.getidRooms());
-            stat.setBoolean(2,a.isAvailable());
-            stat.setInt(3,a.getFloor());
-            stat.setInt(4,a.getMedicId());
-            stat.setInt(5,a.getDoctorOfficeId());
+            stat.setInt(1,a.getPrescriptionID());
+            stat.setDouble(2,a.getPrescriptionPrice());
+            stat.setInt(3,a.getMedicId());
+            stat.setInt(4,a.getPatientId());
             if(stat.executeUpdate() == 0 ){
-               throw new DAOException("It may not have saved");
+                throw new DAOException("It may not have saved");
             }
 
         } catch (SQLException e) {
@@ -49,18 +48,16 @@ public class RoomsDAO extends AbstractDAO implements IRoomsDAO {
             }
         }
     }
-
     @Override
-    public void update(Rooms a) throws DAOException, ConnectException {
+    public void update(Prescription a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getidRooms());
-            stat.setBoolean(2,a.isAvailable());
-            stat.setInt(3,a.getFloor());
-            stat.setInt(4,a.getMedicId());
-            stat.setInt(5,a.getDoctorOfficeId());
+            stat.setDouble(1,a.getPrescriptionPrice());
+            stat.setInt(2,a.getMedicId());
+            stat.setInt(3,a.getPatientId());
+            stat.setInt(4,a.getPrescriptionID());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
@@ -104,30 +101,28 @@ public class RoomsDAO extends AbstractDAO implements IRoomsDAO {
         }
     }
 
-    private Rooms convert (ResultSet rs) throws SQLException {
-
-        int idRooms = rs.getInt("idRooms");
-        boolean isAvailable = rs.getBoolean("isAvailable");
-        int floor = rs.getInt("floor");
+    private Prescription convert (ResultSet rs) throws SQLException {
+        int prescriptionID = rs.getInt("idPrescription");
+        double prescriptionPrice = rs.getDouble("prescriptionPrice");
         int medicId = rs.getInt("medicId");
-        int doctorOfficeId = rs.getInt("doctorOfficeId");
-        Rooms room = new Rooms(idRooms, isAvailable, floor, medicId, doctorOfficeId);
-        return room;
+        int patientId = rs.getInt("patientId");
+        Prescription prescription = new Prescription(prescriptionID,prescriptionPrice,medicId,patientId);
+        return prescription;
     }
 
     @Override
-    public List<Rooms> getList() throws DAOException, ConnectException {
+    public List<Prescription> getList() throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        List<Rooms> roomsList = new ArrayList<>();
+        List<Prescription> prescriptionList = new ArrayList<>();
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
             while(rs.next()) {
-                roomsList.add(convert(rs));
+                prescriptionList.add(convert(rs));
             }
-            } catch (SQLException e) {
+        } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {
             returnConnection(conn);
@@ -145,15 +140,14 @@ public class RoomsDAO extends AbstractDAO implements IRoomsDAO {
                     throw new DAOException("SQL Error.",e);
                 }
             }
-        } return roomsList;
-
+        } return prescriptionList;
     }
 
     @Override
-    public Rooms getObject(Integer id) throws DAOException, ConnectException {
+    public Prescription getObject(Integer id) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        Rooms a = null;
+        Prescription a = null;
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ONE);

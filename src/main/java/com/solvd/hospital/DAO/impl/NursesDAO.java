@@ -1,8 +1,8 @@
-package com.solvd.hospital.DAO.jdbcimpl;
+package com.solvd.hospital.DAO.impl;
 
-import com.solvd.hospital.DAO.IAppointmentsDAO;
 import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.bin.Appointments;
+import com.solvd.hospital.bin.Nurses;
+import com.solvd.hospital.DAO.INursesDAO;
 
 import java.net.ConnectException;
 import java.sql.Connection;
@@ -12,24 +12,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppointmentsDAO extends AbstractDAO implements IAppointmentsDAO {
+public class NursesDAO extends AbstractDAO implements INursesDAO {
 
-    private final static String INSERT = "INSERT INTO Appointments(idAppointments, medicId, appointmentRoomID, patientId) VALUES (?,?,?,?) ";
-    private final static String UPDATE = "UPDATE Appointments SET medicId = ?, appointmentRoomID = ?, patientId = ? WHERE idAppointments = ?";
-    private final static String DELETE = "DELETE FROM Appointments where idAppointments = ?";
-    private final static String GET_ALL = "SELECT idAppointments, medicId, appointmentRoomID, patientId FROM Appointments";
-    private final static String GET_ONE = "SELECT idAppointments, medicId, appointmentRoomID, patientId FROM Appointments WHERE idAppointments = ?";
+    private final static String  INSERT = "INSERT INTO Nurses(idNurses, firstName, lastName, chirophaneRoomId) VALUES (?,?,?,?) ";
+    private final static String  UPDATE = "UPDATE Nurses SET firstName = ?, lastName = ?, chirophaneRoomId = ? WHERE idNurses = ?";
+    private final static String DELETE = "DELETE FROM Nurses where idNurses = ?";
+    private final static String GET_ALL = "SELECT idNurses, firstName, lastName, chirophaneRoomId FROM Nurses";
+    private final static String GET_ONE = "SELECT idNurses, firstName, lastName, chirophaneRoomId FROM Nurses WHERE idNurses = ?";
 
     @Override
-    public void insert(Appointments a) throws DAOException, ConnectException {
+    public void insert(Nurses a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(INSERT);
-            stat.setInt(1,a.getAppointmentID());
-            stat.setInt(2,a.getMedicId());
-            stat.setInt(3,a.getAppointmentRoomID());
-            stat.setInt(4,a.getPatientId());
+            stat.setInt(1,a.getNursesId());
+            stat.setString(2,a.getFirstName());
+            stat.setString(3,a.getLastName());
+            stat.setInt(4,a.getChirophaneRoomId());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
@@ -49,15 +49,16 @@ public class AppointmentsDAO extends AbstractDAO implements IAppointmentsDAO {
     }
 
     @Override
-    public void update(Appointments a) throws DAOException, ConnectException {
+    public void update(Nurses a) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(UPDATE);
-            stat.setInt(1,a.getMedicId());
-            stat.setInt(2,a.getAppointmentRoomID());
-            stat.setInt(3,a.getPatientId());
-            stat.setInt(4,a.getAppointmentID());
+
+            stat.setString(1,a.getFirstName());
+            stat.setString(2,a.getLastName());
+            stat.setInt(3,a.getChirophaneRoomId());
+            stat.setInt(4,a.getNursesId());
             if(stat.executeUpdate() == 0 ){
                 throw new DAOException("It may not have saved");
             }
@@ -101,26 +102,26 @@ public class AppointmentsDAO extends AbstractDAO implements IAppointmentsDAO {
         }
     }
 
-    private Appointments convert (ResultSet rs) throws SQLException {
-        int appointmentId = rs.getInt("idAppointments");
-        int medicId = rs.getInt("medicId");
-        int appointmentRoomId = rs.getInt("appointmentRoomId");
-        int patientId = rs.getInt("patientId");
-        Appointments appointment = new Appointments(appointmentId, medicId, appointmentRoomId, patientId);
-        return appointment;
+    private Nurses convert (ResultSet rs) throws SQLException {
+        int nursesId = rs.getInt("idNurses");
+        String firstName = rs.getString("firstName");
+        String lastName = rs.getString("lastName");
+        int chirophaneRoomId = rs.getInt("chirophaneRoomId");
+        Nurses nurse = new Nurses(nursesId,firstName,lastName,chirophaneRoomId);
+        return nurse;
     }
 
     @Override
-    public List<Appointments> getList() throws DAOException, ConnectException {
+    public List<Nurses> getList() throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        List<Appointments> appointmentsList = new ArrayList<>();
+        List<Nurses> nursesList = new ArrayList<>();
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ALL);
             rs = stat.executeQuery();
             while(rs.next()) {
-                appointmentsList.add(convert(rs));
+                nursesList.add(convert(rs));
             }
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
@@ -140,14 +141,14 @@ public class AppointmentsDAO extends AbstractDAO implements IAppointmentsDAO {
                     throw new DAOException("SQL Error.",e);
                 }
             }
-        } return appointmentsList;
+        } return nursesList;
     }
 
     @Override
-    public Appointments getObject(Integer id) throws DAOException, ConnectException {
+    public Nurses getObject(Integer id) throws DAOException, ConnectException {
         PreparedStatement stat = null;
         ResultSet rs = null;
-        Appointments a = null;
+        Nurses a = null;
         Connection conn = getConnection();
         try{
             stat = conn.prepareStatement(GET_ONE);
@@ -155,11 +156,9 @@ public class AppointmentsDAO extends AbstractDAO implements IAppointmentsDAO {
             rs = stat.executeQuery();
             if (rs.next()) {
                 a = convert(rs);
-
             } else {
                 throw new DAOException("Register not found.");
             }
-
         } catch (SQLException e) {
             throw new DAOException("SQL Error.",e);
         } finally {

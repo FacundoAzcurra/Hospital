@@ -1,8 +1,13 @@
 package com.solvd.hospital.bin;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class HealthCare {
+    @JsonProperty
     int healthCareID;
+    @JsonProperty
     double price;
+    @JsonProperty
     String category;
 
     public HealthCare() {
