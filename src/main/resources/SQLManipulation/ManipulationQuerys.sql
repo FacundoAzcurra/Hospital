@@ -66,3 +66,53 @@ SELECT COUNT(idChirophaneTrainees), ChirophaneTrainees
 FROM ChirophaneTrainees
 GROUP BY idChirophaneTrainees
 HAVING COUNT(idChirophaneTrainees) > 5;
+
+SELECT Patients.idPatient, Prescription.patientId
+FROM Patients
+LEFT JOIN Prescription ON Patients.idPatient = Prescription.patientId
+ORDER BY Patients.firstName;
+
+SELECT Medics.idMedics, Prescription.medicId
+FROM Medics
+LEFT JOIN Prescription ON Medics.idMedics = Prescription.medicId
+ORDER BY Medics.firstName;
+
+SELECT Patients.idPatient, HealthCareInsurance.idPatient
+FROM Patients
+LEFT JOIN HealthCareInsurance ON Patients.idPatient = HealthCareInsurance.idPatient
+ORDER BY Patients.firstName;
+
+SELECT Managers.idHospital, Hospital.idHospital
+FROM Managers
+LEFT JOIN Hospital ON Managers.idHospital = Hospital.idHospital
+ORDER BY Managers.idHospital;
+
+SELECT Managers.idManager, Hospital.administrativesId
+FROM Managers
+LEFT JOIN Hospital ON Managers.idManager = Hospital.administrativesId
+ORDER BY Managers.idManager;
+
+SELECT DeliveryRooms.deliveryRoomsMedicId, Medics.idMedics
+FROM DeliveryRooms
+RIGHT JOIN Medics ON DeliveryRooms.deliveryRoomsMedicId = Medics.idMedics
+ORDER BY DeliveryRooms.deliveryRoomsMedicId;
+
+SELECT Medics.RoomId, Rooms.idRooms
+FROM Medics
+RIGHT JOIN Rooms ON Medics.RoomId = Rooms.idRooms
+ORDER BY Medics.RoomId;
+
+SELECT DoctorOffice.idDoctorOffice, Rooms.DoctorOfficeId
+FROM DoctorOffice
+RIGHT JOIN Rooms ON DoctorOffice.idDoctorOffice = Rooms.DoctorOfficeId
+ORDER BY DoctorOffice.idDoctorOffice;
+
+SELECT DoctorOffice.idMedics, Medics.idMedics
+FROM DoctorOffice
+RIGHT JOIN Medics ON DoctorOffice.idMedics = Medics.idMedics
+ORDER BY DoctorOffice.idMedics;
+
+SELECT Ambulances.ambulanceDriverId, AmbulanceDriver.ambulanceDriverid
+FROM Ambulances
+RIGHT JOIN AmbulanceDriver ON Ambulances.ambulanceDriverId = AmbulanceDriver.ambulanceDriverid
+ORDER BY Ambulances.ambulanceDriverId;
