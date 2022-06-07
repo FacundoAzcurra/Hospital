@@ -6,7 +6,7 @@ public interface Constants {
     String USER = "db.user";
     String PASS = "db.pass";
     String DRIVER = "db.driver";
-    String MYBATIS_CONFIG = "db.mybatisConfig";
+    String MYBATIS_CONFIG = "mybatisConfig.xml";
     String JAXB = "src/main/resources/prescriptions.xml";
     String JSON = "src/main/resources/json/healthcare.json";
 }
