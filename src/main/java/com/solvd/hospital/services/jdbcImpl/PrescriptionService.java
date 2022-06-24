@@ -8,7 +8,7 @@ import com.solvd.hospital.services.mybatis.IPrescriptionServices;
 import java.net.ConnectException;
 import java.util.List;
 
-public class PrescriptionImpl implements IPrescriptionServices {
+public class PrescriptionService implements IPrescriptionServices {
     @Override
     public List<Prescription> getPrescription() throws ConnectException {
         IPrescriptionDAO prescriptionDAO = new PrescriptionDAO();

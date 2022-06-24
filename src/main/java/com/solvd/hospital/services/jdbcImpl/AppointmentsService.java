@@ -8,7 +8,7 @@ import com.solvd.hospital.services.mybatis.IAppointmentsService;
 import java.net.ConnectException;
 import java.util.List;
 
-public class AppointmentsImpl implements IAppointmentsService {
+public class AppointmentsService implements IAppointmentsService {
 
     @Override
     public List<Appointments> getAppointments() throws ConnectException {

@@ -1,7 +1,6 @@
 package com.solvd.hospital.services.mybatis;
 
 import com.solvd.hospital.bin.Medics;
-import com.solvd.hospital.services.mybatis.servicesimpl.MedicsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

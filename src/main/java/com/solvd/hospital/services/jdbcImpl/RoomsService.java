@@ -8,7 +8,7 @@ import com.solvd.hospital.services.mybatis.IRoomsService;
 import java.net.ConnectException;
 import java.util.List;
 
-public class RoomsImpl implements IRoomsService {
+public class RoomsService implements IRoomsService {
 
     @Override
     public List<Rooms> getRooms() throws ConnectException {

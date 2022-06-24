@@ -8,7 +8,7 @@ import com.solvd.hospital.services.mybatis.INursesService;
 import java.net.ConnectException;
 import java.util.List;
 
-public class NursesImpl implements INursesService {
+public class NursesService implements INursesService {
 
     @Override
     public List<Nurses> getNurses() throws ConnectException {

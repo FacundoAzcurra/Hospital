@@ -7,13 +7,12 @@ import com.solvd.hospital.DAO.*;
 import com.solvd.hospital.DAO.impl.*;
 import com.solvd.hospital.bin.*;
 import com.solvd.hospital.services.jaxb.Jaxb;
-import com.solvd.hospital.services.mybatis.servicesimpl.MedicsService;
+import com.solvd.hospital.services.mybatis.MedicsService;
 import com.solvd.hospital.util.ConnectionPool;
 import com.solvd.hospital.util.Constants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.xml.bind.JAXB;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;

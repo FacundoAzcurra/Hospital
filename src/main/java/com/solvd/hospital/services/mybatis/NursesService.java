@@ -1,51 +1,43 @@
-package com.solvd.hospital.services.mybatis.servicesimpl;
+package com.solvd.hospital.services.mybatis;
 
-
-import com.solvd.hospital.bin.Medics;
+import com.solvd.hospital.bin.Nurses;
 import com.solvd.hospital.DAO.DAOException;
-import com.solvd.hospital.DAO.IMedicsDAO;
-import com.solvd.hospital.services.mybatis.IMedicsService;
+import com.solvd.hospital.DAO.INursesDAO;
 import com.solvd.hospital.util.Constants;
 import com.solvd.hospital.util.DBPropertiesUtil;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class MedicsService extends AbstractService implements IMedicsService {
-    private final static Logger LOGGER = LogManager.getLogger(MedicsService.class);
+public class NursesService extends AbstractService implements INursesService {
+    private final static Logger LOGGER = LogManager.getLogger(NursesService.class);
     private final static String MYBATIS_CONFIG = DBPropertiesUtil.getString(Constants.MYBATIS_CONFIG);
 
-
     @Override
-    public List<Medics> getMedics() {
-        IMedicsDAO medicsDAO;
-        List<Medics> medicsList;
+    public List<Nurses> getNurses() {
+        INursesDAO nursesDAO;
+        List<Nurses> nursesList;
         try(SqlSession session = sqlSession()){
-            medicsDAO = session.getMapper(IMedicsDAO.class);
-            medicsList = new ArrayList<>();
-            medicsList = medicsDAO.getList();
+            nursesDAO = session.getMapper(INursesDAO.class);
+            nursesList = new ArrayList<>();
+            nursesList = nursesDAO.getList();
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select all' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
-        return medicsList;
+        return nursesList;
     }
 
     @Override
-    public void saveMedic(Medics medics) {
-        IMedicsDAO medicsDAO;
+    public void saveNurse(Nurses nurses) {
+        INursesDAO nursesDAO;
         try(SqlSession session = sqlSession()){
-            medicsDAO = session.getMapper(IMedicsDAO.class);
-            medicsDAO.insert(medics);
+            nursesDAO = session.getMapper(INursesDAO.class);
+            nursesDAO.insert(nurses);
             session.commit();
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'insert' statement with myBatis" + e);
@@ -55,12 +47,12 @@ public class MedicsService extends AbstractService implements IMedicsService {
     }
 
     @Override
-    public void updateMedicById(int idMedics, Medics newMedic) {
-        IMedicsDAO medicsDAO;
-        try(SqlSession session = sqlSession()) {
-            medicsDAO = session.getMapper(IMedicsDAO.class);
-            newMedic.setidMedics(idMedics);
-            medicsDAO.update(newMedic);
+    public void updateNurseById(int idNurses, Nurses newNurse) {
+        INursesDAO nursesDAO;
+        try (SqlSession session = sqlSession()){
+            nursesDAO = session.getMapper(INursesDAO.class);
+            newNurse.setNursesId(idNurses);
+            nursesDAO.update(newNurse);
             session.commit();
         } catch (IOException | DAOException e) {
             LOGGER.info("Can't solve 'update' statement with myBatis " + e);
@@ -69,26 +61,26 @@ public class MedicsService extends AbstractService implements IMedicsService {
     }
 
     @Override
-    public Medics getMedicById(int idMedics) {
-        IMedicsDAO medicsDAO;
-        Medics m;
+    public Nurses getNurseById(int nursesId) {
+        INursesDAO nursesDAO;
+        Nurses n;
         try(SqlSession session = sqlSession()){
-            medicsDAO = session.getMapper(IMedicsDAO.class);
-            m = medicsDAO.getObject(idMedics);
+            nursesDAO = session.getMapper(INursesDAO.class);
+            n = nursesDAO.getObject(nursesId);
 
         } catch (IOException | DAOException e ) {
             LOGGER.info("Can´t solve 'select' statement with myBatis" + e);
             throw new RuntimeException(e);
         }
-        return m;
+        return n;
     }
 
     @Override
-    public void deleteMedic(int idMedics) {
-        IMedicsDAO medicsDAO;
+    public void deleteNurse(int nursesId) {
+        INursesDAO nursesDAO;
         try(SqlSession session = sqlSession()){
-            medicsDAO = session.getMapper(IMedicsDAO.class);
-            medicsDAO.delete(idMedics);
+            nursesDAO = session.getMapper(INursesDAO.class);
+            nursesDAO.delete(nursesId);
             session.commit();
 
         } catch (IOException  | DAOException e) {
@@ -96,4 +88,6 @@ public class MedicsService extends AbstractService implements IMedicsService {
             throw new RuntimeException();
         }
     }
-}
+    }
+
+

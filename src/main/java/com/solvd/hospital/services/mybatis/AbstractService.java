@@ -1,4 +1,4 @@
-package com.solvd.hospital.services.mybatis.servicesimpl;
+package com.solvd.hospital.services.mybatis;
 
 import com.solvd.hospital.util.Constants;
 import org.apache.ibatis.io.Resources;
