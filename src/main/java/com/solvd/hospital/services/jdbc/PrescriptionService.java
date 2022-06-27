@@ -1,4 +1,4 @@
-package com.solvd.hospital.services.jdbcImpl;
+package com.solvd.hospital.services.jdbc;
 
 import com.solvd.hospital.DAO.IPrescriptionDAO;
 import com.solvd.hospital.DAO.impl.PrescriptionDAO;
